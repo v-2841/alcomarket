@@ -5,7 +5,7 @@ from django.db import models
 User = get_user_model()
 
 
-class Product(models.Model):
+class Good(models.Model):
     name = models.CharField(
         max_length=255,
         verbose_name='Наименование',
@@ -24,7 +24,7 @@ class Product(models.Model):
         verbose_name='Наличие на складе',
     )
     image = models.ImageField(
-        upload_to='products/',
+        upload_to='goods/',
         verbose_name='Изображение',
         blank=True,
         null=True,
@@ -32,12 +32,14 @@ class Product(models.Model):
     category = models.ForeignKey(
         'Category',
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         verbose_name='Категория',
     )
     manufacturer = models.ForeignKey(
         'Manufacturer',
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         verbose_name='Производитель',
     )
@@ -45,24 +47,33 @@ class Product(models.Model):
         auto_now_add=True,
         verbose_name='Дата создания',
     )
-    archived = models.BooleanField(
-        default=False,
-        verbose_name='Архивирован',
+    active = models.BooleanField(
+        default=True,
+        verbose_name='Активный',
     )
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
 
     def __str__(self):
         return self.name
 
-    # def save(self, *args, **kwargs):
-    #     if self.pk is None:
-    #         return super().save(*args, **kwargs)
-    #     new_instance = Product()
-    #     for field in self._meta.fields:
-    #         setattr(new_instance, field.name, getattr(self, field.name))
-    #     new_instance.some_field = "новое значение"
-    #     new_instance.pk = None
-    #     result = new_instance.save()
-    #     return result
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            return super(Good, self).save(*args, **kwargs)
+        good = Good.objects.get(id=self.id)
+        if good.price != self.price:
+            good.active = False
+            super(Good, good).save(*args, **kwargs)
+            self.id = None
+            self._state.adding = True
+            return super(Good, self).save(*args, **kwargs)
+        return super(Good, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        raise Exception('Нельзя удалять товары. Отмечайте их как архивные.')
 
 
 class Category(models.Model):
@@ -91,8 +102,8 @@ class Order(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
     )
-    products = models.ManyToManyField(
-        Product,
+    goods = models.ManyToManyField(
+        Good,
         through='OrderItem',
         verbose_name='Товары',
     )
@@ -113,8 +124,8 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Заказ',
     )
-    product = models.ForeignKey(
-        Product,
+    good = models.ForeignKey(
+        Good,
         on_delete=models.CASCADE,
         verbose_name='Товар',
     )
