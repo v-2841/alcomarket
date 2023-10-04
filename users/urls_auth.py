@@ -10,7 +10,7 @@ from django.urls import path
 from users import views
 
 
-app_name = 'users'
+app_name = 'auth'
 urlpatterns = [
     path('signup/', views.SignUp.as_view(), name='signup'),
     path(

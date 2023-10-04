@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+  Сообщение принято!
+{% endblock title %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Сообщение принято!</div>
+        <div class="card-body">
+          <p>Скоро вам ответят на электронную почту, которую вы указали.</p>
+          <div class="text-center">
+            <a class="btn btn-primary" href="{% url 'goods:index' %}">Перейти на главную</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'debug_toolbar',
     'core.apps.CoreConfig',
+    'feedbacks.apps.FeedbacksConfig',
     'goods.apps.GoodsConfig',
     'users.apps.UsersConfig',
 ]
@@ -113,3 +114,6 @@ INTERNAL_IPS = ['127.0.0.1']
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = "mail/"
+
+LOGIN_URL = 'auth:login'
+LOGIN_REDIRECT_URL = 'goods:index'

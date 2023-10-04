@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}
+  Оставить сообщение
+{% endblock title %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Оставить сообщение</div>
+        <div class="card-body">
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}<div class="alert alert-danger">{{ field.label }}: {{ error|escape }}</div>{% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group row my-2 p-2">
+              <label for="id_name">
+                Имя<span class="required text-danger">*</span>
+              </label>
+              <input type="text"
+                     name="name"
+                     maxlength="30"
+                     class="form-control"
+                     required
+                     id="id_name"
+                     value="{{ form.name.value|default:'' }}" />
+            </div>
+            <div class="form-group row my-2 p-2">
+              <label for="id_email">
+                Адрес электронной почты<span class="required text-danger">*</span>
+              </label>
+              <input type="email"
+                     name="email"
+                     maxlength="254"
+                     class="form-control"
+                     required
+                     id="id_email"
+                     value="{{ form.email.value|default:'' }}" />
+            </div>
+            <div class="form-group row my-2 p-2">
+              <label for="id_message">
+                Сообщение<span class="required text-danger">*</span>
+              </label>
+              <textarea name="message"
+                        class="form-control"
+                        required
+                        id="id_message"
+                        value="{{ form.message.value|default:'' }}"
+                        rows="10">
+              </textarea>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Отправить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
