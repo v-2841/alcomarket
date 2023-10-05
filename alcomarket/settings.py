@@ -1,3 +1,4 @@
+import locale
 import os
 from pathlib import Path
 
@@ -5,6 +6,7 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,6 +27,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'feedbacks.apps.FeedbacksConfig',
     'goods.apps.GoodsConfig',
+    'orders.apps.OrdersConfig',
     'users.apps.UsersConfig',
 ]
 
@@ -97,6 +100,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

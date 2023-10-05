@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 
 
 User = get_user_model()
@@ -51,6 +53,12 @@ class Good(models.Model):
         default=True,
         verbose_name='Активный',
     )
+    is_in_shopping_cart = models.ManyToManyField(
+        User,
+        through='UserShoppingCart',
+        related_name='shopping_cart',
+        verbose_name='В корзине',
+    )
 
     class Meta:
         ordering = ('name',)
@@ -60,20 +68,52 @@ class Good(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            return super(Good, self).save(*args, **kwargs)
-        good = Good.objects.get(id=self.id)
-        if good.price != self.price:
-            good.active = False
-            super(Good, good).save(*args, **kwargs)
-            self.id = None
-            self._state.adding = True
-            return super(Good, self).save(*args, **kwargs)
-        return super(Good, self).save(*args, **kwargs)
-
     def delete(self, *args, **kwargs):
         raise Exception('Нельзя удалять товары. Отмечайте их как архивные.')
+
+
+@receiver(post_save, sender=Good)
+def update_active_status(sender, instance, **kwargs):
+    if instance.stock == 0 and instance.active:
+        instance.active = False
+        instance.save()
+
+
+@receiver(pre_save, sender=Good)
+def check_price_change(sender, instance, **kwargs):
+    if instance.pk is not None:
+        previous_good = Good.objects.get(pk=instance.pk)
+        if previous_good.price != instance.price:
+            instance.shopping_carts.all().delete()
+
+
+class UserShoppingCart(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+    )
+    good = models.ForeignKey(
+        Good,
+        on_delete=models.CASCADE,
+        related_name='shopping_carts',
+        verbose_name='Товар',
+    )
+    quantity = models.PositiveIntegerField(
+        default=1,
+        verbose_name='Количество',
+    )
+
+    class Meta:
+        verbose_name = 'Товар в корзине'
+        verbose_name_plural = 'Корзины'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'good'], name='already_in_shopping_cart'),
+        ]
+
+    def __str__(self):
+        return self.user.username + ' - ' + self.good.name
 
 
 class Category(models.Model):
@@ -81,6 +121,11 @@ class Category(models.Model):
         max_length=100,
         verbose_name='Наименование категории',
     )
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.name
@@ -92,48 +137,10 @@ class Manufacturer(models.Model):
         verbose_name='Наименование производителя',
     )
 
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Производитель'
+        verbose_name_plural = 'Производители'
+
     def __str__(self):
         return self.name
-
-
-class Order(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name='Пользователь',
-    )
-    goods = models.ManyToManyField(
-        Good,
-        through='OrderItem',
-        verbose_name='Товары',
-    )
-    total_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name='Итоговая цена',
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Дата создания',
-    )
-
-
-class OrderItem(models.Model):
-    order = models.ForeignKey(
-        Order,
-        on_delete=models.CASCADE,
-        verbose_name='Заказ',
-    )
-    good = models.ForeignKey(
-        Good,
-        on_delete=models.CASCADE,
-        verbose_name='Товар',
-    )
-    quantity = models.PositiveIntegerField(
-        verbose_name='Количество',
-    )
-    price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name='Цена',
-    )

@@ -1,1 +1,12 @@
-<h1>Главная</h1>
+{% extends "base.html" %}
+{% block title %}
+  Главная
+{% endblock title %}
+{% block content %}
+  <h1>Главная</h1>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for good in goods %}
+      {% include "goods/includes/good.html" %}
+    {% endfor %}
+  </div>
+{% endblock content %}

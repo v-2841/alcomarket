@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from goods.models import Good
+from goods.models import Category, Good, Manufacturer, UserShoppingCart
 
 
 @admin.action(description='Сделать неактивным')
@@ -14,8 +14,11 @@ class GoodAdmin(admin.ModelAdmin):
                     'active')
     ordering = ('-active', 'name')
 
-    def has_delete_permission(self, request, obj=None):
-        return False
+    # def has_delete_permission(self, request, obj=None):
+    #     return False
 
 
 admin.site.register(Good, GoodAdmin)
+admin.site.register(Category)
+admin.site.register(Manufacturer)
+admin.site.register(UserShoppingCart)
