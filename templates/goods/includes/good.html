@@ -30,7 +30,7 @@
               id="add-to-cart-button-{{ good.id }}"
               data-good-id="{{ good.id }}"></button>
     {% else %}
-      <a href="{% url 'auth:login' %}" class="btn btn-warning">В корзину</a>
+      <a href="{% url 'login' %}" class="btn btn-warning">В корзину</a>
     {% endif %}
     <p class="pt-2">
       <small>Осталось {% if good.stock > 10 %}>10{% else %}{{ good.stock }}{% endif %} шт.</small>

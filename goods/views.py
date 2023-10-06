@@ -13,7 +13,8 @@ def test(request):
 
 
 def index(request):
-    return render(request, 'goods/index.html', {'goods': Good.objects.all()})
+    return render(request, 'goods/index.html', {
+        'goods': Good.objects.order_by('-created_at')})
 
 
 @login_required
