@@ -18,6 +18,12 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="{% static "img/fav/browserconfig.xml" %}">
     <meta name="theme-color" content="#ffffff">
+    <style>
+      body {
+        {% comment %} background-image: url({% static "img/background.jpg" %}); {% endcomment %}
+        background-color:#FFFCE7;
+      }
+    </style>
     <title>
       {% block title %}
         <div>Место для заголовка</div>

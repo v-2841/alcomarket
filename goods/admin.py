@@ -10,8 +10,8 @@ def set_active_to_false(modeladmin, request, queryset):
 
 class GoodAdmin(admin.ModelAdmin):
     actions = [set_active_to_false]
-    list_display = ('name', 'price', 'stock', 'category', 'manufacturer',
-                    'active')
+    list_display = ('name', 'volume', 'price', 'stock', 'category',
+                    'manufacturer', 'active')
     ordering = ('-active', 'name')
 
     # def has_delete_permission(self, request, obj=None):

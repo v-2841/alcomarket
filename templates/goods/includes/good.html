@@ -1,20 +1,40 @@
-<div class="col">
-  <div class="card h-100" style="max-width: 540px;">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img src="{{ good.image.url }}"
-             class="img-fluid rounded-start"
-             alt="Изображение">
-      </div>
-      <div class="d-flex flex-column col-md-8" >
-        <div class="card-body">
-          <h5 class="card-title">{{ good.name }}</h5>
-          <p class="card-text">{{ good.description }}</p>
-        </div>
-        <div class="card-footer text-end">
-          <small class="text-muted">Last updated 3 mins ago</small>
-        </div>
-      </div>
-    </div>
+<div class="row pt-3 pb-3">
+  <div class="col-12 col-md-3">
+    {% if good.image %}<img class="card-img" src="{{ good.image.url }}">{% endif %}
+  </div>
+  <div class="col-12 col-md-6 ps-md-4 pt-2 pt-md-0">
+    <h4>{{ good.name }}</h4>
+    <p>{{ good.description|linebreaksbr }}</p>
+    <table class="table table-sm mt-4">
+      <tbody>
+        <tr>
+          <td style="background-color:transparent;">Категория</td>
+          <td class="text-end" style="background-color:transparent;">{{ good.category.name }}</td>
+        </tr>
+        <tr>
+          <td style="background-color:transparent;">Производитель</td>
+          <td class="text-end" style="background-color:transparent;">{{ good.manufacturer.name }}</td>
+        </tr>
+        <tr>
+          <td style="background-color:transparent;">Объем, л</td>
+          <td class="text-end" style="background-color:transparent;">{{ good.volume.normalize }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-12 col-md-3 align-self-center text-center">
+    <p class="text-danger fw-bold fs-5">{{ good.price.normalize }} ₽</p>
+    {% if user.is_authenticated %}
+      <button type="button"
+              class="btn btn-warning add-to-cart-button"
+              id="add-to-cart-button-{{ good.id }}"
+              data-good-id="{{ good.id }}"></button>
+    {% else %}
+      <a href="{% url 'auth:login' %}" class="btn btn-warning">В корзину</a>
+    {% endif %}
+    <p class="pt-2">
+      <small>Осталось {% if good.stock > 10 %}>10{% else %}{{ good.stock }}{% endif %} шт.</small>
+    </p>
   </div>
 </div>
+{% if not forloop.last %}<hr />{% endif %}

@@ -13,9 +13,16 @@ class Good(models.Model):
         verbose_name='Наименование',
     )
     description = models.TextField(
-        verbose_name='Описание',
         blank=True,
         null=True,
+        verbose_name='Описание',
+    )
+    volume = models.DecimalField(
+        max_digits=6,
+        decimal_places=3,
+        blank=True,
+        null=True,
+        verbose_name='Объем, л',
     )
     price = models.DecimalField(
         max_digits=10,
@@ -72,19 +79,19 @@ class Good(models.Model):
         raise Exception('Нельзя удалять товары. Отмечайте их как архивные.')
 
 
-@receiver(post_save, sender=Good)
-def update_active_status(sender, instance, **kwargs):
-    if instance.stock == 0 and instance.active:
-        instance.active = False
-        instance.save()
-
-
 @receiver(pre_save, sender=Good)
 def check_price_change(sender, instance, **kwargs):
     if instance.pk is not None:
         previous_good = Good.objects.get(pk=instance.pk)
         if previous_good.price != instance.price:
             instance.shopping_carts.all().delete()
+
+
+@receiver(post_save, sender=Good)
+def update_active_status(sender, instance, **kwargs):
+    if instance.stock == 0 and instance.active:
+        instance.active = False
+        instance.save()
 
 
 class UserShoppingCart(models.Model):
@@ -121,6 +128,10 @@ class Category(models.Model):
         max_length=100,
         verbose_name='Наименование категории',
     )
+    slug = models.SlugField(
+        unique=True,
+        verbose_name='Слаг',
+    )
 
     class Meta:
         ordering = ('name',)
@@ -135,6 +146,15 @@ class Manufacturer(models.Model):
     name = models.CharField(
         max_length=100,
         verbose_name='Наименование производителя',
+    )
+    slug = models.SlugField(
+        unique=True,
+        verbose_name='Слаг',
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Описание',
     )
 
     class Meta:
