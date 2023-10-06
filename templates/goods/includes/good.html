@@ -28,7 +28,7 @@
       <button type="button"
               class="btn btn-warning add-to-cart-button"
               id="add-to-cart-button-{{ good.id }}"
-              data-good-id="{{ good.id }}"></button>
+              data-good-id="{{ good.id }}">В корзину</button>
     {% else %}
       <a href="{% url 'login' %}" class="btn btn-warning">В корзину</a>
     {% endif %}
