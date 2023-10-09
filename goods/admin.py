@@ -10,9 +10,14 @@ def set_active_to_false(modeladmin, request, queryset):
 
 class GoodAdmin(admin.ModelAdmin):
     actions = [set_active_to_false]
-    list_display = ('name', 'volume', 'price', 'stock', 'category',
-                    'manufacturer', 'active')
+    list_display = ('name', 'normalize_volume', 'price', 'stock', 'category',
+                    'manufacturer', 'purchase_count', 'active', 'created_at')
     ordering = ('-active', 'name')
+    readonly_fields = ('purchase_count', 'created_at')
+
+    @admin.display(description="Объем, л")
+    def normalize_volume(self, obj):
+        return obj.volume.normalize()
 
     # def has_delete_permission(self, request, obj=None):
     #     return False

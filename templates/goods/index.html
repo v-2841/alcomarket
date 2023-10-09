@@ -5,8 +5,9 @@
 {% endblock title %}
 {% block content %}
   <h1>Главная</h1>
-  {% for good in goods %}
+  {% for good in page_obj %}
     {% include "goods/includes/good.html" %}
   {% endfor %}
+  {% include "includes/paginator.html" %}
   <script src="{% static 'js/shopping_cart.js' %}"></script>
 {% endblock content %}

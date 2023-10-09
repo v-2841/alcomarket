@@ -92,7 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Yerevan"
 
 USE_I18N = True
 
@@ -123,3 +123,5 @@ EMAIL_FILE_PATH = "mail/"
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'goods:index'
+
+PAGINATOR_VIEW_NUM = 10

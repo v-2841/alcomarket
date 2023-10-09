@@ -1,8 +1,12 @@
 <div class="row pt-3 pb-3">
-  <div class="col-12 col-md-3">
-    {% if good.image %}<img class="card-img" src="{{ good.image.url }}">{% endif %}
+  <div class="col-12 col-md-3 text-center">
+    {% if good.image %}
+      <img class="img-fluid"
+           src="{{ good.image.url }}"
+           style="max-height: 480px">
+    {% endif %}
   </div>
-  <div class="col-12 col-md-6 ps-md-4 pt-2 pt-md-0">
+  <div class="col-12 col-md-7 ps-md-4 pt-2 pt-md-0">
     <h4>{{ good.name }}</h4>
     <p>{{ good.description|linebreaksbr }}</p>
     <table class="table table-sm mt-4">
@@ -22,19 +26,33 @@
       </tbody>
     </table>
   </div>
-  <div class="col-12 col-md-3 align-self-center text-center">
+  <div class="col-12 col-md-2 align-self-center text-center">
     <p class="text-danger fw-bold fs-5">{{ good.price.normalize }} ₽</p>
     {% if user.is_authenticated %}
       <button type="button"
               class="btn btn-warning add-to-cart-button"
               id="add-to-cart-button-{{ good.id }}"
-              data-good-id="{{ good.id }}">В корзину</button>
+              data-good-id="{{ good.id }}">
+        {% if user in good.is_in_shopping_cart.all %}
+          Добавлено
+        {% else %}
+          В корзину
+        {% endif %}
+      </button>
     {% else %}
       <a href="{% url 'login' %}" class="btn btn-warning">В корзину</a>
     {% endif %}
-    <p class="pt-2">
-      <small>Осталось {% if good.stock > 10 %}>10{% else %}{{ good.stock }}{% endif %} шт.</small>
-    </p>
+    {% if good.stock < 10 %}
+      <p class="pt-2">
+        <small>
+          {% if good.stock == 1 %}
+            Осталась
+          {% else %}
+            Осталось
+          {% endif %}
+        {{ good.stock }} шт.</small>
+      </p>
+    {% endif %}
   </div>
 </div>
 {% if not forloop.last %}<hr />{% endif %}

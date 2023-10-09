@@ -60,6 +60,10 @@ class Good(models.Model):
         default=True,
         verbose_name='Активный',
     )
+    purchase_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Число проданных товаров',
+    )
     is_in_shopping_cart = models.ManyToManyField(
         User,
         through='UserShoppingCart',
@@ -92,6 +96,12 @@ def update_active_status(sender, instance, **kwargs):
     if instance.stock == 0 and instance.active:
         instance.active = False
         instance.save()
+
+
+@receiver(post_save, sender=Good)
+def update_shopping_carts(sender, instance, **kwargs):
+    if instance.stock == 0:
+        instance.shopping_carts.all().delete()
 
 
 class UserShoppingCart(models.Model):
