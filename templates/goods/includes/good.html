@@ -33,7 +33,7 @@
               class="btn btn-warning add-to-cart-button"
               id="add-to-cart-button-{{ good.id }}"
               data-good-id="{{ good.id }}">
-        {% if user in good.is_in_shopping_cart.all %}
+        {% if good in shopping_cart %}
           Добавлено
         {% else %}
           В корзину

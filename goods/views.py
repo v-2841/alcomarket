@@ -9,11 +9,12 @@ from goods.models import Good, UserShoppingCart
 def index(request):
     page_obj = paginator(request, Good.objects.filter(
         active=True).order_by('-created_at').select_related(
-            'category', 'manufacturer').prefetch_related(
-                'is_in_shopping_cart'))
+            'category', 'manufacturer'))
     context = {
         'page_obj': page_obj,
     }
+    if request.user.is_authenticated:
+        context['shopping_cart'] = request.user.shopping_cart.all()
     return render(request, 'goods/index.html', context)
 
 

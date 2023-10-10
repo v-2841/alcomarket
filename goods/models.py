@@ -20,8 +20,6 @@ class Good(models.Model):
     volume = models.DecimalField(
         max_digits=6,
         decimal_places=3,
-        blank=True,
-        null=True,
         verbose_name='Объем, л',
     )
     price = models.DecimalField(

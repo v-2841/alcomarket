@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var goodId = addToCartButton.getAttribute('data-good-id');
         addToCartButton.addEventListener('click', function() {
             var url = '/' + goodId + '/add/';
-            if (addToCartButton.textContent === 'Добавлено') {
+            if (addToCartButton.textContent.includes('Добавлено')) {
                 url = '/' + goodId + '/remove/';
             }
             fetch(url, {
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.status === 200) {
-                    if (addToCartButton.textContent === 'Добавлено') {
+                    if (addToCartButton.textContent.includes('Добавлено')) {
                         addToCartButton.textContent = 'В корзину';
                     } else {
                         addToCartButton.textContent = 'Добавлено';
