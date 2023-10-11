@@ -19,8 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.status === 200) {
                     if (addToCartButton.textContent.includes('Добавлено')) {
                         addToCartButton.textContent = 'В корзину';
+                        addToCartButton.classList.remove('btn-green');
+                        addToCartButton.classList.add('btn-pink');
                     } else {
                         addToCartButton.textContent = 'Добавлено';
+                        addToCartButton.classList.remove('btn-pink');
+                        addToCartButton.classList.add('btn-green');
                     }
                 } else {
                     console.error('Ошибка при обновлении корзины');

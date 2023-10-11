@@ -12,25 +12,25 @@
     <table class="table table-sm mt-4">
       <tbody>
         <tr>
-          <td style="background-color:transparent;">Категория</td>
-          <td class="text-end" style="background-color:transparent;">{{ good.category.name }}</td>
+          <td>Категория</td>
+          <td class="text-end">{{ good.category.name }}</td>
         </tr>
         <tr>
-          <td style="background-color:transparent;">Производитель</td>
-          <td class="text-end" style="background-color:transparent;">{{ good.manufacturer.name }}</td>
+          <td>Производитель</td>
+          <td class="text-end">{{ good.manufacturer.name }}</td>
         </tr>
         <tr>
-          <td style="background-color:transparent;">Объем, л</td>
-          <td class="text-end" style="background-color:transparent;">{{ good.volume.normalize }}</td>
+          <td>Объем, л</td>
+          <td class="text-end">{{ good.volume.normalize }}</td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="col-12 col-md-2 align-self-center text-center">
-    <p class="text-danger fw-bold fs-5">{{ good.price.normalize }} ₽</p>
+    <p class="fw-bold fs-5" style="color: #990033;">{{ good.price.normalize }} ₽</p>
     {% if user.is_authenticated %}
       <button type="button"
-              class="btn btn-warning add-to-cart-button"
+              class="btn add-to-cart-button {% if good in shopping_cart %} btn-green {% else %} btn-pink {% endif %}"
               id="add-to-cart-button-{{ good.id }}"
               data-good-id="{{ good.id }}">
         {% if good in shopping_cart %}
@@ -40,7 +40,8 @@
         {% endif %}
       </button>
     {% else %}
-      <a href="{% url 'login' %}" class="btn btn-warning">В корзину</a>
+      <a href="{% url 'login' %}"
+         class="btn btn-pink">В корзину</a>
     {% endif %}
     {% if good.stock < 10 %}
       <p class="pt-2">
