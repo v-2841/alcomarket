@@ -1,10 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
+{% load user_filters %}
 {% block title %}
   Главная
 {% endblock title %}
 {% block content %}
-  <h1>Главная</h1>
+  <img class="card-img my-4" src="{% static "img/index_banner.jpg" %}">
+  <form class="row g-3 py-3">
+    <div class="col-xl-2">{{ sort_form.sort_by|addclass:"form-select form-select-sm" }}</div>
+    <div class="col-xl-2">{{ sort_form.sort_direction|addclass:"form-select form-select-sm" }}</div>
+    <div class="col d-grid gap-2 d-xl-block">
+      <button type="submit" class="btn btn-primary btn-sm">Применить</button>
+    </div>
+  </form>
+  <p class="small">Показано {{ page_obj.object_list.count }} из {{ count_all }}</p>
   {% for good in page_obj %}
     {% include "goods/includes/good.html" %}
   {% endfor %}

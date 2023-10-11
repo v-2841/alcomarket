@@ -3,15 +3,21 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 
 from core.utils import paginator
+from goods.forms import SortForm
 from goods.models import Good, UserShoppingCart
+from goods.utils import sort_util
 
 
 def index(request):
-    page_obj = paginator(request, Good.objects.filter(
-        active=True).order_by('-created_at').select_related(
-            'category', 'manufacturer'))
+    goods = Good.objects.filter(active=True).select_related(
+        'category', 'manufacturer').order_by('name')
+    sort_form = SortForm(request.GET or None)
+    goods = sort_util(request, goods)
+    page_obj = paginator(request, goods)
     context = {
         'page_obj': page_obj,
+        'sort_form': sort_form,
+        'count_all': goods.count(),
     }
     if request.user.is_authenticated:
         context['shopping_cart'] = request.user.shopping_cart.all()

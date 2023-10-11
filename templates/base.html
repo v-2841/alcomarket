@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
     <script src="{% static "js/bootstrap.bundle.js" %}"></script>
-    <script src="{% static "js/jquery-3.7.0.min.js" %}"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="{% static "img/fav/apple-touch-icon.png" %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static "img/fav/favicon-32x32.png" %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static "img/fav/favicon-16x16.png" %}">
@@ -26,7 +25,7 @@
     </style>
     <title>
       {% block title %}
-        <div>Место для заголовка</div>
+        <div>Заголовок</div>
       {% endblock title %}
     </title>
   </head>
@@ -35,9 +34,9 @@
       {% include "includes/header.html" %}
     </header>
     <main>
-      <div class="container py-4">
+      <div class="container py-4" style="max-width:1080px;">
         {% block content %}
-          <div>Место основного контента</div>
+          <div>Основной контент</div>
         {% endblock content %}
       </div>
     </main>
