@@ -5,12 +5,14 @@
   Главная
 {% endblock title %}
 {% block content %}
-  <img class="card-img my-4" src="{% static "img/index_banner.jpg" %}">
+  <img class="card-img my-4"
+       src="{% static 'img/index_banner.jpg' %}"
+       alt="Index">
   <form class="row g-3 py-3">
     <div class="col-xl-2">{{ sort_form.sort_by|addclass:"form-select form-select-sm" }}</div>
     <div class="col-xl-2">{{ sort_form.sort_direction|addclass:"form-select form-select-sm" }}</div>
     <div class="col d-grid gap-2 d-xl-block">
-      <button type="submit" class="btn btn-primary btn-sm btn-pink">Применить</button>
+      <button type="submit" class="btn btn-sm btn-pink">Применить</button>
     </div>
   </form>
   <p class="small">Показано {{ page_obj.object_list.count }} из {{ count_all }}</p>

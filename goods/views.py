@@ -1,10 +1,11 @@
 from django.http import JsonResponse
+from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 
 from core.utils import paginator
 from goods.forms import SortForm
-from goods.models import Good, UserShoppingCart
+from goods.models import Good, UserShoppingCart, Category, Manufacturer
 from goods.utils import sort_util
 
 
@@ -51,3 +52,18 @@ def remove_from_cart(request, good_id):
             return JsonResponse({'message': 'Товар не найден в корзине'},
                                 status=200)
     return JsonResponse({'error': 'Метод не разрешен'}, status=405)
+
+
+def categories(request):
+    categories = Category.objects.annotate(
+        num_active_goods=Count('good', filter=Q(good__active=True))).filter(
+            num_active_goods__gt=0).order_by('name')
+    return render(request, 'goods/categories.html', {'categories': categories})
+
+
+def manufactureres(request):
+    manufactureres = Manufacturer.objects.annotate(
+        num_active_goods=Count('good', filter=Q(good__active=True))).filter(
+            num_active_goods__gt=0).order_by('name')
+    return render(request, 'goods/manufactureres.html', {
+        'manufactureres': manufactureres})

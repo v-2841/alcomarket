@@ -26,10 +26,47 @@
     background-color: #990033;
 }
 
+.form-control:focus {
+    border-color: #FFC3A6;
+    box-shadow: 0 0 0 0.25rem #ffbb998f;
+}
+
+.form-select:focus {
+    border-color: #FFC3A6;
+    box-shadow: 0 0 0 0.25rem #ffbb998f;
+}
+
+.pagination {
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem #ffbb998f;
+    --bs-pagination-active-bg: #FFC3A6;
+    --bs-pagination-active-border-color: #FFC3A6;
+}
+
+.navbar-brand {
+    color: #FEC3A6;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus {
+    color: #FEC3A6;
+}
+
+.nav-link {
+    color: #FEC3A6;
+}
+
+.nav-link:hover,
+a.nav-link:focus {
+    color: #FEC3A6;
+}
+
 :root {
     --bs-body-bg: #FFFCE7;
     --bs-link-color: #2F9C95;
     --bs-link-hover-color: #2A8D87;
+    --bs-border-color: #FFC3A6;
+    --bs-tertiary-bg: #ffbb998f;
+    --bs-secondary-bg: #ffbb998f;
 }
 
 a {

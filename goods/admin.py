@@ -1,4 +1,7 @@
+from typing import Any
 from django.contrib import admin
+from django.db.models.query import QuerySet
+from django.http.request import HttpRequest
 
 from goods.models import Category, Good, Manufacturer, UserShoppingCart
 
@@ -18,6 +21,10 @@ class GoodAdmin(admin.ModelAdmin):
     @admin.display(description="Объем, л")
     def normalize_volume(self, obj):
         return obj.volume.normalize()
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.select_related('category', 'manufacturer')
 
     # def has_delete_permission(self, request, obj=None):
     #     return False
