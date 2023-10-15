@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Поиск по запросу {{ search_field|truncatechars:30 }}
+{% endblock title %}
+{% block content %}
+  <h1 class="mb-4">Поиск по запросу {{ search_field }}</h1>
+  <h4>Категории (найдено {{ categories.count }})</h4>
+  {% for category in categories %}<p>{{ category.name }}</p>{% endfor %}
+  <hr />
+  <h4>Производители (найдено {{ manufacturers.count }})</h4>
+  {% for manufacturer in manufacturers %}<p>{{ manufacturer.name }}</p>{% endfor %}
+  <hr />
+  <h4>Ассортимент (найдено {{ goods.count }})</h4>
+  {% for good in goods %}
+    {% include "goods/includes/good.html" %}
+  {% endfor %}
+  <script src="{% static 'js/shopping_cart.js' %}"></script>
+{% endblock content %}

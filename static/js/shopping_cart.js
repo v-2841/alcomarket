@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     addToCartButtons.forEach(function(addToCartButton) {
         var goodId = addToCartButton.getAttribute('data-good-id');
         addToCartButton.addEventListener('click', function() {
-            var url = '/' + goodId + '/add/';
+            var url = '/goods/' + goodId + '/add/';
             if (addToCartButton.textContent.includes('Добавлено')) {
-                url = '/' + goodId + '/remove/';
+                url = '/goods/' + goodId + '/remove/';
             }
             fetch(url, {
                 method: 'POST',

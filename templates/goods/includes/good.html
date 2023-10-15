@@ -7,7 +7,13 @@
     {% endif %}
   </div>
   <div class="col-12 col-md-7 ps-md-4 pt-2 pt-md-0">
-    <h4>{{ good.name }}</h4>
+    {% if forloop %}
+      <a class="header-color" href="{% url 'goods:good_detail' good.id %}">
+        <h4>{{ good.name }}</h4>
+      </a>
+    {% else %}
+      <h4>{{ good.name }}</h4>
+    {% endif %}
     <p>{{ good.description|linebreaksbr }}</p>
     <table class="table table-sm mt-4">
       <tbody>
@@ -27,7 +33,7 @@
     </table>
   </div>
   <div class="col-12 col-md-2 align-self-center text-center">
-    <p class="fw-bold fs-5" style="color: #990033;">{{ good.price.normalize }} ₽</p>
+    <p class="fw-bold fs-5 header-color">{{ good.price.normalize }} ₽</p>
     {% if user.is_authenticated %}
       <button type="button"
               class="btn add-to-cart-button {% if good in shopping_cart %} btn-green {% else %} btn-pink {% endif %}"
@@ -40,8 +46,7 @@
         {% endif %}
       </button>
     {% else %}
-      <a href="{% url 'login' %}?next=/#{{ good.id }}"
-         class="btn btn-pink">В корзину</a>
+      <a href="{% url 'login' %}?next=/#{{ good.id }}" class="btn btn-pink">В корзину</a>
     {% endif %}
     {% if good.stock < 10 %}
       <p class="pt-2">
@@ -56,4 +61,4 @@
     {% endif %}
   </div>
 </div>
-{% if not forloop.last %}<hr />{% endif %}
+{% if not forloop.last and forloop %}<hr />{% endif %}

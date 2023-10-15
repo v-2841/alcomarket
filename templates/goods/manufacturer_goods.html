@@ -2,12 +2,11 @@
 {% load static %}
 {% load user_filters %}
 {% block title %}
-  Главная
+  {{ manufacturer.name }}
 {% endblock title %}
 {% block content %}
-  <img class="card-img my-4"
-       src="{% static 'img/index_banner.jpg' %}"
-       alt="Index">
+  <h1>{{ manufacturer.name }}</h1>
+  <div class="border border-3 rounded p-2">{{ manufacturer.description|linebreaksbr }}</div>
   <form class="row g-3 py-3">
     <div class="col-xl-2">{{ sort_form.sort_by|addclass:"form-select form-select-sm" }}</div>
     <div class="col-xl-2">{{ sort_form.sort_direction|addclass:"form-select form-select-sm" }}</div>

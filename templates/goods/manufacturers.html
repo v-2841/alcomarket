@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}
+  Производители
+{% endblock title %}
+{% block content %}
+  {% for manufacturer in manufacturers %}
+    <a href="{% url 'goods:manufacturer_goods' manufacturer.slug %}">{{ manufacturer.name }}</a>
+    <br>
+  {% endfor %}
+{% endblock content %}

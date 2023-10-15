@@ -4,7 +4,7 @@
 {% endblock title %}
 {% block content %}
   {% for category in categories %}
-    {{ category.name }}
+    <a href="{% url 'goods:category_goods' category.slug %}">{{ category.name }}</a>
     <br>
   {% endfor %}
 {% endblock content %}

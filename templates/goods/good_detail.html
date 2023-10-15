@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+{% load user_filters %}
+{% block title %}
+  {{ good.name }}
+{% endblock title %}
+{% block content %}
+  {% include "goods/includes/good.html" %}
+  <script src="{% static 'js/shopping_cart.js' %}"></script>
+{% endblock content %}

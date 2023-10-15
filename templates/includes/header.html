@@ -27,12 +27,20 @@
               <a class="nav-link" href="{% url 'goods:categories' %}">Категории</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'goods:index' %}">Производители</a>
+              <a class="nav-link" href="{% url 'goods:manufacturers' %}">Производители</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'feedbacks:create' %}">Обратная связь</a>
             </li>
           </ul>
+          <form class="d-flex" role="search" action="{% url 'goods:search' %}">
+            <input class="form-control mx-2"
+                   type="search"
+                   placeholder="Поиск"
+                   aria-label="Search"
+                   name="search_field">
+            <button class="btn btn-pink btn-sm" type="submit">🔍</button>
+          </form>
           <ul class="navbar-nav nav-pills nav-fill ms-auto">
             {% if user.is_authenticated %}
               <div class="dropdown nav-item">

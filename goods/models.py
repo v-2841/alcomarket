@@ -41,6 +41,7 @@ class Good(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name='goods',
         verbose_name='Категория',
     )
     manufacturer = models.ForeignKey(
@@ -48,6 +49,7 @@ class Good(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name='goods',
         verbose_name='Производитель',
     )
     created_at = models.DateTimeField(
