@@ -92,13 +92,6 @@ def check_price_change(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Good)
-def update_active_status(sender, instance, **kwargs):
-    if instance.stock == 0 and instance.active:
-        instance.active = False
-        instance.save()
-
-
-@receiver(post_save, sender=Good)
 def update_shopping_carts(sender, instance, **kwargs):
     if instance.stock == 0:
         instance.shopping_carts.all().delete()
