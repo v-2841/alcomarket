@@ -43,6 +43,9 @@
           </form>
           <ul class="navbar-nav nav-pills nav-fill ms-auto">
             {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Корзина</a>
+              </li>
               <div class="dropdown nav-item">
                 <button type="button"
                         class="nav-link dropdown-toggle"
@@ -50,6 +53,10 @@
                         aria-expanded="false">{{ user.username }}</button>
                 <ul class="dropdown-menu dropdown-menu-end text-center ms-auto"
                     aria-labelledby="navbarDrop">
+                  <li>
+                    <a href="{% url 'profiles:profile' user.username %}"
+                       class="dropdown-item">Профиль</a>
+                  </li>
                   <li>
                     <a href="{% url 'password_change_form' %}" class="dropdown-item">Изменить пароль</a>
                   </li>

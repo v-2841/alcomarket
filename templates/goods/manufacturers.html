@@ -3,8 +3,13 @@
   Производители
 {% endblock title %}
 {% block content %}
-  {% for manufacturer in manufacturers %}
-    <a href="{% url 'goods:manufacturer_goods' manufacturer.slug %}">{{ manufacturer.name }}</a>
-    <br>
-  {% endfor %}
+  <h1 class="mb-4">Производители</h1>
+  <div class="text-center">
+    <div class="list-group text-center">
+      {% for manufacturer in manufacturers %}
+        <a href="{% url 'goods:manufacturer_goods' manufacturer.slug %}"
+           class="list-group-item list-group-item-action">{{ manufacturer.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock content %}

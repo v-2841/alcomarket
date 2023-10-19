@@ -34,30 +34,34 @@
   </div>
   <div class="col-12 col-md-2 align-self-center text-center">
     <p class="fw-bold fs-5 header-color">{{ good.price.normalize }} ₽</p>
-    {% if user.is_authenticated %}
-      <button type="button"
-              class="btn add-to-cart-button {% if good in shopping_cart %} btn-green {% else %} btn-pink {% endif %}"
-              id="add-to-cart-button-{{ good.id }}"
-              data-good-id="{{ good.id }}">
-        {% if good in shopping_cart %}
-          Добавлено
-        {% else %}
-          В корзину
-        {% endif %}
-      </button>
+    {% if good.stock == 0 %}
+      <p class="header-color">Нет в наличии</p>
     {% else %}
-      <a href="{% url 'login' %}?next=/#{{ good.id }}" class="btn btn-pink">В корзину</a>
-    {% endif %}
-    {% if good.stock < 10 %}
-      <p class="pt-2">
-        <small>
-          {% if good.stock == 1 %}
-            Осталась
+      {% if user.is_authenticated %}
+        <button type="button"
+                class="btn add-to-cart-button {% if good in shopping_cart %} btn-green {% else %} btn-pink {% endif %}"
+                id="add-to-cart-button-{{ good.id }}"
+                data-good-id="{{ good.id }}">
+          {% if good in shopping_cart %}
+            Добавлено
           {% else %}
-            Осталось
+            В корзину
           {% endif %}
-        {{ good.stock }} шт.</small>
-      </p>
+        </button>
+      {% else %}
+        <a href="{% url 'login' %}?next=/#{{ good.id }}" class="btn btn-pink">В корзину</a>
+      {% endif %}
+      {% if good.stock < 10 %}
+        <p class="pt-2">
+          <small>
+            {% if good.stock == 1 %}
+              Осталась
+            {% else %}
+              Осталось
+            {% endif %}
+          {{ good.stock }} шт.</small>
+        </p>
+      {% endif %}
     {% endif %}
   </div>
 </div>
