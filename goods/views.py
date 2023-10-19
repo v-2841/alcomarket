@@ -133,5 +133,5 @@ def search(request):
 @login_required
 def shopping_cart(request):
     formset = UserShoppingCartFormSet(
-        queryset=request.user.shopping_cart.all())
+        queryset=UserShoppingCart.objects.filter(user=request.user))
     return render(request, 'goods/shopping_cart.html', {'formset': formset})

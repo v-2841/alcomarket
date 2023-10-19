@@ -5,6 +5,13 @@
 {% block content %}
   <h1 class="mb-4">Корзина</h1>
   <form method="post">
-    {{ formset }}
+    {{ formset.management_form }}
+    {% for form in formset %}
+      <ul>
+        <li>{{ form.instance.good.name }}</li>
+        <li>{{ form.quantity }}</li>
+        {% if formset.can_delete %}<li>{{ form.DELETE }}</li>{% endif %}
+      </ul>
+    {% endfor %}
   </form>
 {% endblock content %}

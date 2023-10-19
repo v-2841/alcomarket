@@ -26,22 +26,9 @@ class SortForm(forms.Form):
     )
 
 
-class UserShoppingCartForm(forms.ModelForm):
-    class Meta:
-        model = UserShoppingCart
-        fields = ['good', 'quantity']
-
-    def __init__(self, *args, **kwargs):
-        super(UserShoppingCartForm, self).__init__(*args, **kwargs)
-        self.fields['good'].widget = forms.TextInput(attrs={'readonly': 'readonly'})
-
-    def clean_good(self):
-        return self.instance.good.name
-
-
 UserShoppingCartFormSet = forms.modelformset_factory(
     UserShoppingCart,
-    form=UserShoppingCartForm,
+    fields=['quantity'],
     extra=0,
     can_delete=True,
     edit_only=True,
