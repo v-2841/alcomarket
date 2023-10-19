@@ -1,17 +1,56 @@
 {% extends "base.html" %}
+{% load user_filters %}
 {% block title %}
   Корзина
 {% endblock title %}
 {% block content %}
-  <h1 class="mb-4">Корзина</h1>
-  <form method="post">
-    {{ formset.management_form }}
-    {% for form in formset %}
-      <ul>
-        <li>{{ form.instance.good.name }}</li>
-        <li>{{ form.quantity }}</li>
-        {% if formset.can_delete %}<li>{{ form.DELETE }}</li>{% endif %}
-      </ul>
-    {% endfor %}
-  </form>
+  <div class="container">
+    <h1 class="mb-4">Корзина</h1>
+    <p class="small">*При внесении изменений сохраните их</p>
+    <button class="btn btn-green mb-3" type="submit" form="cartForm">Сохранить изменения</button>
+    <div class="row">
+      <div class="col-12 col-lg-9">
+        <form method="post" id="cartForm">
+          {% csrf_token %}
+          {{ formset.management_form }}
+          {% for form in formset %}
+            {{ form.id }}
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="row g-2 align-items-center">
+                  <div class="col-12 col-lg-auto">
+                    <a class="header-color"
+                       href="{% url 'goods:good_detail' form.instance.good.id %}">
+                      <p class="my-0 fs-5">{{ form.instance.good.name }}</p>
+                    </a>
+                  </div>
+                  <div class="col-lg-auto container-fluid"></div>
+                  <div class="col-auto col-lg-auto">
+                    <label class="col-form-label">Количество</label>
+                  </div>
+                  <div class="col-auto col-lg-auto">{{ form.quantity|addclass:"form-control width-input-form" }}</div>
+                  <div class="col-12 col-lg-auto">{{ form.DELETE|addclass:"form-check-input me-2" }} Удалить</div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </form>
+      </div>
+      <div class="col-12 col-lg-3">
+        <div class="card">
+          <div class="card-header text-center">Итого</div>
+          <div class="card-body">
+            {% for goods in shopping_cart %}
+              <p>{{ goods.good.name }}</p>
+              <p class="small">
+                {{ goods.good.price }} * {{ goods.quantity }} шт. = {{ goods.good.price|multiply:goods.quantity }} ₽
+              </p>
+              {% if not forloop.last %}<hr />{% endif %}
+            {% endfor %}
+          </div>
+          <div class="card-footer text-end">{{ total_price }} ₽</div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}

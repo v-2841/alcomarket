@@ -113,8 +113,13 @@ class UserShoppingCart(models.Model):
         default=1,
         verbose_name='Количество',
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата добавления',
+    )
 
     class Meta:
+        ordering = ('-created_at',)
         verbose_name = 'Товар в корзине'
         verbose_name_plural = 'Корзины'
         constraints = [

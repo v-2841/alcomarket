@@ -1,7 +1,4 @@
-from typing import Any
 from django.contrib import admin
-from django.db.models.query import QuerySet
-from django.http.request import HttpRequest
 
 from goods.models import Category, Good, Manufacturer, UserShoppingCart
 
@@ -30,7 +27,13 @@ class GoodAdmin(admin.ModelAdmin):
     #     return False
 
 
+class UserShoppingCartAdmin(admin.ModelAdmin):
+    list_display = ('created_at', 'user', 'good', 'quantity')
+    date_hierarchy = 'created_at'
+    readonly_fields = ('created_at',)
+
+
 admin.site.register(Good, GoodAdmin)
 admin.site.register(Category)
 admin.site.register(Manufacturer)
-admin.site.register(UserShoppingCart)
+admin.site.register(UserShoppingCart, UserShoppingCartAdmin)

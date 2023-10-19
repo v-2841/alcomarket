@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 
@@ -132,6 +132,19 @@ def search(request):
 
 @login_required
 def shopping_cart(request):
-    formset = UserShoppingCartFormSet(
-        queryset=UserShoppingCart.objects.filter(user=request.user))
-    return render(request, 'goods/shopping_cart.html', {'formset': formset})
+    if request.method == 'POST':
+        formset = UserShoppingCartFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+    shopping_cart = UserShoppingCart.objects.filter(
+        user=request.user)
+    total_price = 0
+    for goods in shopping_cart:
+        total_price += goods.good.price * goods.quantity
+    formset = UserShoppingCartFormSet(queryset=shopping_cart)
+    context = {
+        'formset': formset,
+        'shopping_cart': shopping_cart,
+        'total_price': total_price,
+    }
+    return render(request, 'goods/shopping_cart.html', context=context)
