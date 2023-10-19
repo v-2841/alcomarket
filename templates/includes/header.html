@@ -44,7 +44,7 @@
           <ul class="navbar-nav nav-pills nav-fill ms-auto">
             {% if user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Корзина</a>
+                <a class="nav-link" href="{% url 'goods:shopping_cart' %}">Корзина</a>
               </li>
               <div class="dropdown nav-item">
                 <button type="button"

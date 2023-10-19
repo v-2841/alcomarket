@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 
 from core.utils import paginator
-from goods.forms import SortForm
+from goods.forms import SortForm, UserShoppingCartFormSet
 from goods.models import Good, UserShoppingCart, Category, Manufacturer
 from goods.utils import sort_util
 
@@ -128,3 +128,10 @@ def search(request):
     if request.user.is_authenticated:
         context['shopping_cart'] = request.user.shopping_cart.all()
     return render(request, 'goods/search.html', context=context)
+
+
+@login_required
+def shopping_cart(request):
+    formset = UserShoppingCartFormSet(
+        queryset=request.user.shopping_cart.all())
+    return render(request, 'goods/shopping_cart.html', {'formset': formset})
