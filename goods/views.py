@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.db.models import Count, Q, Sum
+from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 
@@ -7,6 +7,8 @@ from core.utils import paginator
 from goods.forms import SortForm, UserShoppingCartFormSet
 from goods.models import Good, UserShoppingCart, Category, Manufacturer
 from goods.utils import sort_util
+from orders.forms import OrderForm
+from orders.models import OrderGood
 
 
 def index(request):
@@ -132,19 +134,63 @@ def search(request):
 
 @login_required
 def shopping_cart(request):
+    shopping_cart = UserShoppingCart.objects.filter(user=request.user)
+    formset = UserShoppingCartFormSet(queryset=shopping_cart)
     if request.method == 'POST':
-        formset = UserShoppingCartFormSet(request.POST)
+        formset = UserShoppingCartFormSet(request.POST, queryset=shopping_cart)
         if formset.is_valid():
             formset.save()
-    shopping_cart = UserShoppingCart.objects.filter(
-        user=request.user)
-    total_price = 0
-    for goods in shopping_cart:
-        total_price += goods.good.price * goods.quantity
-    formset = UserShoppingCartFormSet(queryset=shopping_cart)
+            return redirect('goods:shopping_cart')
+    total_price = sum(
+        good.good.price * good.quantity for good in shopping_cart)
     context = {
         'formset': formset,
         'shopping_cart': shopping_cart,
         'total_price': total_price,
     }
-    return render(request, 'goods/shopping_cart.html', context=context)
+    return render(request, 'goods/shopping_cart.html', context)
+
+
+@login_required
+def shopping_cart_remove(request, good_id):
+    UserShoppingCart.objects.get(user=request.user, good=good_id).delete()
+    return redirect('goods:shopping_cart')
+
+
+@login_required
+def pre_order(request):
+    total_price_prev = request.GET.get('total_price')
+    shopping_cart = UserShoppingCart.objects.filter(user=request.user)
+    total_price = sum(
+        good.good.price * good.quantity for good in shopping_cart)
+    if (total_price_prev != str(total_price).replace('.', ',')):
+        return redirect('goods:shopping_cart')
+    form = OrderForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
+            for good in shopping_cart:
+                OrderGood.objects.create(
+                    order=order,
+                    good=good.good,
+                    quantity=good.quantity,
+                    price=good.good.price,
+                )
+                good_new_stock = good.good
+                good_new_stock.stock = good_new_stock.stock - good.quantity
+                good_new_stock.save()
+            shopping_cart.delete()
+            return redirect('goods:ordered')
+    context = {
+        'shopping_cart': shopping_cart,
+        'total_price': total_price,
+        'form': form,
+    }
+    return render(request, 'goods/pre_order.html', context)
+
+
+@login_required
+def ordered(request):
+    return render(request, 'goods/ordered.html')

@@ -13,6 +13,7 @@ class Order(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
+        related_name='orders',
     )
     goods = models.ManyToManyField(
         Good,
@@ -25,14 +26,10 @@ class Order(models.Model):
     )
     address = models.TextField(
         max_length=1000,
-        blank=True,
-        null=True,
         verbose_name='Адрес',
     )
     contact = models.CharField(
         max_length=64,
-        blank=True,
-        null=True,
         verbose_name='Контактные данные',
     )
     is_delivered = models.BooleanField(

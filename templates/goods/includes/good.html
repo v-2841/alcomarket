@@ -1,9 +1,11 @@
 <div class="row pt-3 pb-3" id="{{ good.id }}">
   <div class="col-12 col-md-3 text-center">
     {% if good.image %}
-      <img class="img-fluid"
-           src="{{ good.image.url }}"
-           style="max-height: 480px">
+      <a href="{{ good.image.url }}">
+        <img class="img-fluid"
+             src="{{ good.image.url }}"
+             style="max-height: 480px">
+      </a>
     {% endif %}
   </div>
   <div class="col-12 col-md-7 ps-md-4 pt-2 pt-md-0">
@@ -19,11 +21,17 @@
       <tbody>
         <tr>
           <td>Категория</td>
-          <td class="text-end">{{ good.category.name }}</td>
+          <td class="text-end">
+            <a class="header-color"
+               href="{% url 'goods:category_goods' good.category.slug %}">{{ good.category.name }}</a>
+          </td>
         </tr>
         <tr>
           <td>Производитель</td>
-          <td class="text-end">{{ good.manufacturer.name }}</td>
+          <td class="text-end">
+            <a class="header-color"
+               href="{% url 'goods:manufacturer_goods' good.manufacturer.slug %}">{{ good.manufacturer.name }}</a>
+          </td>
         </tr>
         <tr>
           <td>Объем, л</td>

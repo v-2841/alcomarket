@@ -22,16 +22,26 @@ def profile(request, username):
     user = get_object_or_404(User, username=username)
     if user != request.user:
         return redirect('goods:index')
+    context = {
+        'orders': user.orders.order_by('-created_at'),
+    }
+    return render(request, 'users/profile.html', context)
+
+
+@login_required
+def profile_edit(request, username):
+    user = get_object_or_404(User, username=username)
+    if user != request.user:
+        return redirect('goods:index')
     form = ProfileForm(
         request.POST or None,
         instance=user,
     )
     context = {
         'form': form,
-        'user_data': user,
     }
     if not form.is_valid():
-        return render(request, 'users/profile.html', context)
+        return render(request, 'users/profile_edit.html', context)
     form.save()
     messages.success(request, 'Данные профиля успешно изменены')
-    return render(request, 'users/profile.html', context)
+    return render(request, 'users/profile_edit.html', context)

@@ -6,51 +6,78 @@
 {% block content %}
   <div class="container">
     <h1 class="mb-4">Корзина</h1>
-    <p class="small">*При внесении изменений сохраните их</p>
-    <button class="btn btn-green mb-3" type="submit" form="cartForm">Сохранить изменения</button>
-    <div class="row">
-      <div class="col-12 col-lg-9">
-        <form method="post" id="cartForm">
-          {% csrf_token %}
-          {{ formset.management_form }}
-          {% for form in formset %}
-            {{ form.id }}
-            <div class="card mb-3">
-              <div class="card-body">
-                <div class="row g-2 align-items-center">
-                  <div class="col-12 col-lg-auto">
-                    <a class="header-color"
-                       href="{% url 'goods:good_detail' form.instance.good.id %}">
-                      <p class="my-0 fs-5">{{ form.instance.good.name }}</p>
-                    </a>
+    {% if formset.forms %}
+      <p class="small">*При внесении изменений сохраните их</p>
+      <button class="btn btn-green mb-3" type="submit" form="cartForm">Сохранить изменения</button>
+      <div class="row">
+        <div class="col-12 col-lg-9">
+          <form method="post" id="cartForm">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {% for form in formset %}
+              {{ form.id }}
+              <div class="card mb-3">
+                {% if form.errors %}
+                  <div class="card-header alert alert-danger">
+                    {% for field in form %}
+                      {% for error in field.errors %}{{ field.label }}: {{ error|escape }}{% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}{{ error|escape }}{% endfor %}
                   </div>
-                  <div class="col-lg-auto container-fluid"></div>
-                  <div class="col-auto col-lg-auto">
-                    <label class="col-form-label">Количество</label>
+                {% endif %}
+                <div class="card-body">
+                  <div class="row g-2 align-items-center">
+                    <div class="col-12 col-lg-auto">
+                      <a href="{% url 'goods:good_detail' form.instance.good.id %}">
+                        <p class="my-lg-0 fs-5 header-color">{{ form.instance.good.name }}</p>
+                      </a>
+                    </div>
+                    <div class="col-lg-auto container-fluid"></div>
+                    <div class="col-auto col-lg-auto">
+                      <div class="input-group">
+                        {{ form.quantity|addclass:"form-control width-input-form" }}
+                        <span class="input-group-text bg-transparent">шт.</span>
+                      </div>
+                      {% if form.instance.good.stock < 10 %}
+                        <p class="small mb-0 mt-2 text-center header-color">Осталось {{ form.instance.good.stock }} шт.</p>
+                      {% endif %}
+                    </div>
+                    <div class="col-auto d-lg-none container-fluid"></div>
+                    <div class="col-auto col-lg-auto">
+                      <a href="{% url 'goods:shopping_cart_remove' form.instance.good.id %}"
+                         class="btn btn-link ms-4">🗑️</a>
+                    </div>
                   </div>
-                  <div class="col-auto col-lg-auto">{{ form.quantity|addclass:"form-control width-input-form" }}</div>
-                  <div class="col-12 col-lg-auto">{{ form.DELETE|addclass:"form-check-input me-2" }} Удалить</div>
                 </div>
+                <div class="card-footer text-end">{{ form.instance.good.price }} ₽</div>
               </div>
-            </div>
-          {% endfor %}
-        </form>
-      </div>
-      <div class="col-12 col-lg-3">
-        <div class="card">
-          <div class="card-header text-center">Итого</div>
-          <div class="card-body">
-            {% for goods in shopping_cart %}
-              <p>{{ goods.good.name }}</p>
-              <p class="small">
-                {{ goods.good.price }} * {{ goods.quantity }} шт. = {{ goods.good.price|multiply:goods.quantity }} ₽
-              </p>
-              {% if not forloop.last %}<hr />{% endif %}
             {% endfor %}
+          </form>
+        </div>
+        <div class="col-12 col-lg-3">
+          <div class="card">
+            <div class="card-header text-center">Итого</div>
+            <div class="card-body">
+              {% for goods in shopping_cart %}
+                <p>{{ goods.good.name }}</p>
+                <p class="small">
+                  {{ goods.good.price }} * {{ goods.quantity }} шт. = {{ goods.good.price|multiply:goods.quantity }} ₽
+                </p>
+                {% if not forloop.last %}<hr />{% endif %}
+              {% endfor %}
+            </div>
+            <div class="card-footer text-end">{{ total_price }} ₽</div>
           </div>
-          <div class="card-footer text-end">{{ total_price }} ₽</div>
+          <div class="d-grid">
+            {% if not formset.errors %}
+              <a href="{% url 'goods:pre_order' %}?total_price={{ total_price }}"
+                 class="btn btn-block btn-green mt-3">Оформить заказ</a>
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
+    {% else %}
+      В вашей корзине нет товаров
+    {% endif %}
   </div>
 {% endblock content %}

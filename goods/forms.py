@@ -30,6 +30,5 @@ UserShoppingCartFormSet = forms.modelformset_factory(
     UserShoppingCart,
     fields=['quantity'],
     extra=0,
-    can_delete=True,
     edit_only=True,
 )

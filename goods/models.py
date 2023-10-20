@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
@@ -93,8 +94,13 @@ def check_price_change(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Good)
 def update_shopping_carts(sender, instance, **kwargs):
+    good_in_shopping_carts = instance.shopping_carts.all()
     if instance.stock == 0:
-        instance.shopping_carts.all().delete()
+        good_in_shopping_carts.delete()
+    for shopping_cart in good_in_shopping_carts:
+        if instance.stock < shopping_cart.quantity:
+            shopping_cart.quantity = instance.stock
+            shopping_cart.save()
 
 
 class UserShoppingCart(models.Model):
@@ -129,6 +135,11 @@ class UserShoppingCart(models.Model):
 
     def __str__(self):
         return self.user.username + ' - ' + self.good.name
+
+    def clean(self):
+        if self.quantity > self.good.stock:
+            raise ValidationError(
+                {'quantity': 'На складе нет такого количества товаров'})
 
 
 class Category(models.Model):

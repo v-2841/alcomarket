@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load user_filters %}
+{% block title %}
+  Оформить заказ
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h1 class="mb-4">Контактные данные</h1>
+    <div class="row">
+      <div class="col-12 col-lg-9">
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            {% for field in form %}
+              {% for error in field.errors %}<p>{{ field.label }}: {{ error|escape }}</p>{% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<p>{{ error|escape }}</p>{% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" id="orderForm">
+          {% csrf_token %}
+          {{ form.contact|addclass:"form-control mb-3" }}
+          {{ form.address|addclass:"form-control mb-3" }}
+        </form>
+      </div>
+      <div class="col-12 col-lg-3">
+        <div class="card">
+          <div class="card-header text-center">Итого</div>
+          <div class="card-body">
+            {% for goods in shopping_cart %}
+              <p>{{ goods.good.name }}</p>
+              <p class="small">
+                {{ goods.good.price }} * {{ goods.quantity }} шт. = {{ goods.good.price|multiply:goods.quantity }} ₽
+              </p>
+              {% if not forloop.last %}<hr />{% endif %}
+            {% endfor %}
+          </div>
+          <div class="card-footer text-end">{{ total_price }} ₽</div>
+        </div>
+        <div class="d-grid">
+          <button class="btn btn-green mt-3" type="submit" form="orderForm">Оформить заказ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

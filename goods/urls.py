@@ -17,4 +17,8 @@ urlpatterns = [
          name='manufacturer_goods'),
     path('search/', views.search, name='search'),
     path('shopping_cart/', views.shopping_cart, name='shopping_cart'),
+    path('shopping_cart/<int:good_id>/remove/', views.shopping_cart_remove,
+         name='shopping_cart_remove'),
+    path('pre_order/', views.pre_order, name='pre_order'),
+    path('ordered/', views.ordered, name='ordered'),
 ]
