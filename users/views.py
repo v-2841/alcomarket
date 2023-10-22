@@ -1,11 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from .forms import CreationForm, ProfileForm
+from orders.models import OrderGood
+from users.forms import CreationForm, ProfileForm
 
 
 User = get_user_model()
@@ -23,7 +25,9 @@ def profile(request, username):
     if user != request.user:
         return redirect('goods:index')
     context = {
-        'orders': user.orders.order_by('-created_at'),
+        'orders': user.orders.order_by('-created_at').prefetch_related(
+            Prefetch('ordergood_set',
+                     queryset=OrderGood.objects.select_related('good'))),
     }
     return render(request, 'users/profile.html', context)
 

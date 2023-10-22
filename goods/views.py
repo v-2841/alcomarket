@@ -1,11 +1,11 @@
-from django.http import JsonResponse
-from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render, redirect
+from django.db.models import Count, Q
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 
 from core.utils import paginator
 from goods.forms import SortForm, UserShoppingCartFormSet
-from goods.models import Good, UserShoppingCart, Category, Manufacturer
+from goods.models import Category, Good, Manufacturer, UserShoppingCart
 from goods.utils import sort_util
 from orders.forms import OrderForm
 from orders.models import OrderGood
@@ -27,7 +27,8 @@ def index(request):
 
 
 def good_detail(request, good_id):
-    good = get_object_or_404(Good, id=good_id)
+    good = get_object_or_404(Good.objects.select_related(
+        'category', 'manufacturer'), id=good_id)
     context = {
         'good': good,
     }
@@ -118,7 +119,9 @@ def search(request):
     search_field = request.GET.get('search_field')
     if not search_field:
         return redirect('goods:index')
-    goods = Good.objects.filter(active=True, name__icontains=search_field)
+    goods = Good.objects.filter(
+        active=True, name__icontains=search_field).select_related(
+            'category', 'manufacturer')
     categories = Category.objects.filter(name__icontains=search_field)
     manufacturers = Manufacturer.objects.filter(name__icontains=search_field)
     context = {
@@ -134,7 +137,8 @@ def search(request):
 
 @login_required
 def shopping_cart(request):
-    shopping_cart = UserShoppingCart.objects.filter(user=request.user)
+    shopping_cart = UserShoppingCart.objects.filter(
+        user=request.user).select_related('good')
     formset = UserShoppingCartFormSet(queryset=shopping_cart)
     if request.method == 'POST':
         formset = UserShoppingCartFormSet(request.POST, queryset=shopping_cart)

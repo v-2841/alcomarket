@@ -100,3 +100,11 @@ a {
     background-color: #FFC3A6;
     border-color: #FFC3A6;
 }
+
+.delivered {
+    color: #2F9C95;
+}
+
+.notDelivered {
+    color: #990033;
+}
