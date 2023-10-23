@@ -12,6 +12,7 @@ from users import views
 
 urlpatterns = [
     path('signup/', views.SignUp.as_view(), name='signup'),
+    path('age_check/', views.age_check, name='age_check'),
     path(
         'logout/',
         LogoutView.as_view(template_name='users/logged_out.html'),

@@ -3,7 +3,7 @@ from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from core.utils import paginator
+from core.utils import paginator, send_telegram_message
 from goods.forms import SortForm, UserShoppingCartFormSet
 from goods.models import Category, Good, Manufacturer, UserShoppingCart
 from goods.utils import sort_util
@@ -164,7 +164,8 @@ def shopping_cart_remove(request, good_id):
 @login_required
 def pre_order(request):
     total_price_prev = request.GET.get('total_price')
-    shopping_cart = UserShoppingCart.objects.filter(user=request.user)
+    shopping_cart = UserShoppingCart.objects.filter(
+        user=request.user).select_related('good')
     total_price = sum(
         good.good.price * good.quantity for good in shopping_cart)
     if (total_price_prev != str(total_price).replace('.', ',')):
@@ -186,6 +187,7 @@ def pre_order(request):
                 good_new_stock.stock = good_new_stock.stock - good.quantity
                 good_new_stock.save()
             shopping_cart.delete()
+            send_telegram_message('Поступил новый заказ')
             return redirect('goods:ordered')
     context = {
         'shopping_cart': shopping_cart,

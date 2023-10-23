@@ -49,3 +49,10 @@ def profile_edit(request, username):
     form.save()
     messages.success(request, 'Данные профиля успешно изменены')
     return render(request, 'users/profile_edit.html', context)
+
+
+def age_check(request):
+    if request.method == 'POST':
+        request.session['is_adult'] = True
+        return redirect(request.GET.get('next', '/'))
+    return render(request, 'users/age_check.html')

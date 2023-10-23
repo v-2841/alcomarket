@@ -108,3 +108,15 @@ a {
 .notDelivered {
     color: #990033;
 }
+
+@media (min-width: 992px) {
+    .goodImg {
+        max-height: 480px;
+    }
+}
+
+@media (max-width: 991px) {
+    .goodImg {
+        max-height: 240px;
+    }
+}

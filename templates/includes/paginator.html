@@ -1,7 +1,7 @@
 {% load user_filters %}
 {% if page_obj.has_other_pages %}
   <nav aria-label="Page navigation" class="my-5">
-    <ul class="pagination justify-content-end">
+    <ul class="pagination justify-content-center">
       {% if page_obj.has_previous %}
         <li class="page-item">
           <a class="page-link" href="?{% url_replace page=1 %}"><<</a>

@@ -16,7 +16,13 @@ class GoodInline(admin.TabularInline):
         return False
 
 
+@admin.action(description='Отметить доставленными')
+def set_is_delivered_to_true(modeladmin, request, queryset):
+    queryset.update(is_delivered=True)
+
+
 class OrderAdmin(admin.ModelAdmin):
+    actions = [set_is_delivered_to_true]
     inlines = [GoodInline]
     readonly_fields = ['user', 'user_full_name', 'total_price']
     list_display = ('created_at', 'id', 'user', 'user_full_name',

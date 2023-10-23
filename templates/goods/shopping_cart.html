@@ -7,8 +7,7 @@
   <div class="container">
     <h1 class="mb-4">Корзина</h1>
     {% if formset.forms %}
-      <p class="small">*При внесении изменений сохраните их</p>
-      <button class="btn btn-green mb-3" type="submit" form="cartForm">Сохранить изменения</button>
+      
       <div class="row">
         <div class="col-12 col-lg-9">
           <form method="post" id="cartForm">
@@ -70,8 +69,10 @@
           </div>
           <div class="d-grid">
             {% if not formset.errors %}
+              <p class="small mt-3 header-color">При внесении изменений нажмите "Сохранить изменения"</p>
+              <button class="btn btn-green mb-3" type="submit" form="cartForm">Сохранить изменения</button>
               <a href="{% url 'goods:pre_order' %}?total_price={{ total_price }}"
-                 class="btn btn-block btn-green mt-3">Оформить заказ</a>
+                 class="btn btn-green">Оформить заказ</a>
             {% endif %}
           </div>
         </div>

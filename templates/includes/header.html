@@ -2,7 +2,7 @@
 {% load user_filters %}
 {% with request.resolver_match.view_name as view_name %}
   <header>
-    <nav class="navbar navbar-expand-xl">
+    <nav class="navbar navbar-expand-lg">
       <div class="container">
         <a class="navbar-brand" href="{% url 'goods:index' %}">
           <img src="{% static 'img/logo.png' %}"
@@ -22,6 +22,17 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarHeader">
+          <form class="d-flex my-3 my-lg-0 me-2"
+                role="search"
+                action="{% url 'goods:search' %}">
+            <input class="form-control mx-2"
+                   type="search"
+                   placeholder="Поиск"
+                   aria-label="Search"
+                   name="search_field"
+                   style="max-width: 160px">
+            <button class="btn btn-pink btn-sm" type="submit">🔍</button>
+          </form>
           <ul class="navbar-nav nav-pills nav-fill">
             <li class="nav-item">
               <a class="nav-link" href="{% url 'goods:categories' %}">Категории</a>
@@ -32,15 +43,10 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'feedbacks:create' %}">Обратная связь</a>
             </li>
+            <li class="nav-item">
+              <p class="nav-link text-light my-0">Заказы по Москве и области</p>
+            </li>
           </ul>
-          <form class="d-flex" role="search" action="{% url 'goods:search' %}">
-            <input class="form-control mx-2"
-                   type="search"
-                   placeholder="Поиск"
-                   aria-label="Search"
-                   name="search_field">
-            <button class="btn btn-pink btn-sm" type="submit">🔍</button>
-          </form>
           <ul class="navbar-nav nav-pills nav-fill ms-auto">
             {% if user.is_authenticated %}
               <li class="nav-item">

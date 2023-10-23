@@ -1,6 +1,9 @@
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import F, Sum
+from django.db.models.signals import post_save, post_delete, pre_save
+from django.dispatch import receiver
 
 from goods.models import Good
 
@@ -19,6 +22,12 @@ class Order(models.Model):
         Good,
         through='OrderGood',
         verbose_name='Товары',
+    )
+    total_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal(0.00),
+        verbose_name='Итого',
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -44,15 +53,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.created_at.strftime("%c")} - Заказ №{self.id}'
-
-    @property
-    def total_price(self):
-        total = self.ordergood_set.aggregate(total_price=Sum(
-            F('price') * F('quantity'), output_field=models.DecimalField(
-                max_digits=10, decimal_places=2)))['total_price']
-        return total if total is not None else 0
-
-    total_price.fget.short_description = 'Сумма'
 
 
 class OrderGood(models.Model):
@@ -81,3 +81,26 @@ class OrderGood(models.Model):
 
     def __str__(self):
         return f'{self.good.name} - Заказ №{self.order.id}'
+
+
+@receiver(pre_save, sender=OrderGood)
+def subtract_add_total_price(sender, instance, **kwargs):
+    if instance.pk:
+        old_order_good = OrderGood.objects.get(id=instance.id)
+        order = instance.order
+        order.total_price -= old_order_good.price * old_order_good.quantity
+        order.save()
+
+
+@receiver(post_save, sender=OrderGood)
+def add_total_price(sender, instance, **kwargs):
+    order = instance.order
+    order.total_price += instance.price * instance.quantity
+    order.save()
+
+
+@receiver(post_delete, sender=OrderGood)
+def subtract_total_price(sender, instance, **kwargs):
+    order = instance.order
+    order.total_price -= instance.price * instance.quantity
+    order.save()
