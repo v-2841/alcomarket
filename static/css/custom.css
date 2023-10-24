@@ -55,9 +55,9 @@
     color: #FEC3A6;
 }
 
-.nav-link:hover,
-.nav-link:focus {
-    color: #FEC3A6;
+a.nav-link:hover,
+a.nav-link:focus {
+    color: #e5af95 !important;
 }
 
 .navbar {

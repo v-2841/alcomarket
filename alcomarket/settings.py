@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django.contrib.sites',
     'debug_toolbar',
     'core.apps.CoreConfig',
     'feedbacks.apps.FeedbacksConfig',
@@ -40,7 +41,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'core.middlewares.age_check.AgeCheckMiddleware'
+    # 'core.middlewares.age_check.AgeCheckMiddleware',
 ]
 
 ROOT_URLCONF = "alcomarket.urls"
@@ -125,4 +126,6 @@ LOGIN_REDIRECT_URL = 'goods:index'
 
 PAGINATOR_VIEW_NUM = 10
 
-CSRF_TRUSTED_ORIGINS = ['http://31.42.189.165']
+CSRF_TRUSTED_ORIGINS = ['http://alcobottle.com', 'https://alcobottle.com']
+
+SITE_ID = 1
