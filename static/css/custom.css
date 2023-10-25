@@ -1,12 +1,12 @@
 .btn-pink {
     --bs-btn-color: var(--bs-white);
-    --bs-btn-bg: #E5989B;
+    --bs-btn-bg: #e08497;
     --bs-btn-border-color: transparent;
     --bs-btn-hover-color: var(--bs-white);
-    --bs-btn-hover-bg: #DE7C80;
+    --bs-btn-hover-bg: #d65b75;
     --bs-btn-hover-border-color: transparent;
     --bs-btn-active-color: var(--bs-white);
-    --bs-btn-active-bg: #DE7C80;
+    --bs-btn-active-bg: #d65b75;
     --bs-btn-active-border-color: transparent;
 }
 
@@ -84,6 +84,15 @@ a {
 
 .header-color {
     color: #990033;
+}
+
+.goodLink {
+    color: #990033;
+}
+
+.goodLink:hover,
+.goodLink:focus {
+    color: #720026;
 }
 
 .width-input-form {

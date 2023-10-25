@@ -10,31 +10,36 @@
   </p>
   <a href="{% url 'profiles:profile_edit' user.username %}"
      class="header-color">Изменить данные профиля</a>
+  <hr>
   <h5 class="mt-3">Мои заказы</h5>
-  {% for order in orders %}
-    <div class="card my-3">
-      <div class="card-header">
-        Заказ №{{ order.id }} от {{ order.created_at }}
-        <br>
-        Контактные данные: {{ order.contact }}
-        <br>
-        Адрес: {{ order.address }}
-        <br>
-        Статус:
-        {% if order.is_delivered %}
-          <span class="delivered">Доставлен</span>
-        {% else %}
-          <span class="notDelivered">Не доставлен</span>
-        {% endif %}
+  {% if orders %}
+    {% for order in orders %}
+      <div class="card my-3">
+        <div class="card-header">
+          Заказ №{{ order.id }} от {{ order.created_at }}
+          <br>
+          Контактные данные: {{ order.contact }}
+          <br>
+          Адрес: {{ order.address }}
+          <br>
+          Статус:
+          {% if order.is_delivered %}
+            <span class="delivered">Доставлен</span>
+          {% else %}
+            <span class="notDelivered">Не доставлен</span>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          {% for good in order.ordergood_set.all %}
+            <p>{{ good.good.name }}</p>
+            <p>{{ good.price }} x {{ good.quantity }} шт. = {{ good.price|multiply:good.quantity }} ₽</p>
+            {% if not forloop.last %}<hr />{% endif %}
+          {% endfor %}
+        </div>
+        <div class="card-footer text-end">{{ order.total_price }} ₽</div>
       </div>
-      <div class="card-body">
-        {% for good in order.ordergood_set.all %}
-          <p>{{ good.good.name }}</p>
-          <p>{{ good.price }} x {{ good.quantity }} шт. = {{ good.price|multiply:good.quantity }} ₽</p>
-          {% if not forloop.last %}<hr />{% endif %}
-        {% endfor %}
-      </div>
-      <div class="card-footer text-end">{{ order.total_price }} ₽</div>
-    </div>
-  {% endfor %}
+    {% endfor %}
+  {% else %}
+    У вас еще нет заказов
+  {% endif %}
 {% endblock content %}

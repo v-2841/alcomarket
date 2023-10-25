@@ -25,6 +25,7 @@
                      maxlength="30"
                      class="form-control"
                      required
+                     value="{{ form.first_name.value|default:'' }}"
                      id="id_first_name" />
             </div>
             <div class="form-group row my-2 p-2">
@@ -36,6 +37,7 @@
                      maxlength="150"
                      class="form-control"
                      required
+                     value="{{ form.last_name.value|default:'' }}"
                      id="id_last_name" />
             </div>
             <div class="form-group row my-2 p-2">
@@ -48,6 +50,7 @@
                      maxlength="150"
                      class="form-control"
                      required
+                     value="{{ form.username.value|default:'' }}"
                      id="id_username" />
               <small id="id_username-help" class="form-text text-muted">
                 Обязательное поле. Не более 150 символов. Только буквы, цифры и
@@ -63,6 +66,7 @@
                      maxlength="254"
                      class="form-control"
                      required
+                     value="{{ form.email.value|default:'' }}"
                      id="id_email" />
             </div>
             <div class="form-group row my-2 p-2">
