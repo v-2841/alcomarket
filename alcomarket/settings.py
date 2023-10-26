@@ -126,6 +126,7 @@ LOGIN_REDIRECT_URL = 'goods:index'
 
 PAGINATOR_VIEW_NUM = 10
 
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 CSRF_TRUSTED_ORIGINS = ['http://alcobottle.com', 'https://alcobottle.com']
 
 SITE_ID = 1

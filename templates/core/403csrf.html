@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+  Page 403 csrf
+{% endblock title %}
+{% block content %}
+  <div class="container text-center">
+    <h1 class="display-1">403</h1>
+    <p class="lead">
+      Запрещено.
+      <br>
+      CSRF токен недействителен или отсутствует.
+    </p>
+    <a href="{% url 'login' %}" class="btn btn-link">Войти</a>
+  </div>
+{% endblock content %}

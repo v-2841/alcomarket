@@ -30,7 +30,8 @@
                    placeholder="Поиск"
                    aria-label="Search"
                    name="search_field"
-                   style="max-width: 160px">
+                   style="max-width: 160px"
+                   value="{{ request.GET.search_field|default:'' }}">
           </form>
           <ul class="navbar-nav nav-fill">
             <li class="nav-item">

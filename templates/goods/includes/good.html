@@ -20,14 +20,14 @@
         <tr>
           <td>Категория</td>
           <td class="text-end">
-            <a class="header-color"
+            <a class="goodLink"
                href="{% url 'goods:category_goods' good.category.slug %}">{{ good.category.name }}</a>
           </td>
         </tr>
         <tr>
           <td>Производитель</td>
           <td class="text-end">
-            <a class="header-color"
+            <a class="goodLink"
                href="{% url 'goods:manufacturer_goods' good.manufacturer.slug %}">{{ good.manufacturer.name }}</a>
           </td>
         </tr>

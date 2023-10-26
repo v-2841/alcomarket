@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+  Page 404
+{% endblock title %}
+{% block content %}
+  <div class="container text-center">
+    <img class="img-fluid my-3"
+         src="https://http.cat/{{ status_code }}"
+         alt="{{ status_code }}">
+    <p class="lead">
+      Что-то пошло не так! Страница, которую вы запрашиваете, не существует.
+      <br>
+      Возможно она устарела, была удалена, или был введен неверный адрес в адресной строке.
+    </p>
+    <a href="{% url 'goods:index' %}" class="btn btn-link">Перейти на главную</a>
+  </div>
+{% endblock content %}

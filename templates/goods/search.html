@@ -6,10 +6,24 @@
 {% block content %}
   <h1 class="mb-4">Поиск по запросу {{ search_field }}</h1>
   <h4>Категории (найдено {{ categories.count }})</h4>
-  {% for category in categories %}<p>{{ category.name }}</p>{% endfor %}
+  <div class="text-center">
+    <div class="list-group text-center">
+      {% for category in categories %}
+        <a href="{% url 'goods:category_goods' category.slug %}"
+           class="list-group-item list-group-item-action">{{ category.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
   <hr />
   <h4>Производители (найдено {{ manufacturers.count }})</h4>
-  {% for manufacturer in manufacturers %}<p>{{ manufacturer.name }}</p>{% endfor %}
+  <div class="text-center">
+    <div class="list-group text-center">
+      {% for manufacturer in manufacturers %}
+        <a href="{% url 'goods:manufacturer_goods' manufacturer.slug %}"
+           class="list-group-item list-group-item-action">{{ manufacturer.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
   <hr />
   <h4>Ассортимент (найдено {{ goods.count }})</h4>
   {% for good in goods %}

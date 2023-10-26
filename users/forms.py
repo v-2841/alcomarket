@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
+                                       UsernameField)
+from django.core.exceptions import ObjectDoesNotExist
+from django.forms import ValidationError
 
 User = get_user_model()
 
@@ -27,3 +29,28 @@ class ProfileForm(forms.ModelForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
+
+
+class EmailAndUsernameAuthenticationForm(AuthenticationForm):
+    username = UsernameField(
+        label="Email или имя пользователя",
+        widget=forms.TextInput(attrs={'autofocus': True}),
+    )
+    error_messages = {
+        "invalid_login":
+            "Пожалуйста, введите правильные имя пользователя и пароль."
+    }
+
+    def clean_username(self):
+        username = self.data['username']
+        is_email = '@' in username
+        query = {'email__iexact' if is_email else 'username__iexact': username}
+        try:
+            username = User.objects.get(**query).username
+        except ObjectDoesNotExist:
+            raise ValidationError(
+                self.error_messages['invalid_login'],
+                code='invalid_login',
+                params={'username': self.username_field.verbose_name},
+            )
+        return username

@@ -110,6 +110,10 @@ a {
     border-color: #FFC3A6;
 }
 
+.list-group {
+    --bs-list-group-action-active-bg: #FFC3A6;
+}
+
 .delivered {
     color: #2F9C95;
 }

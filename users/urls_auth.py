@@ -8,6 +8,7 @@ from django.contrib.auth.views import (LoginView, LogoutView,
 from django.urls import path
 
 from users import views
+from users.forms import EmailAndUsernameAuthenticationForm
 
 
 urlpatterns = [
@@ -20,7 +21,10 @@ urlpatterns = [
     ),
     path(
         'login/',
-        LoginView.as_view(template_name='users/login.html'),
+        LoginView.as_view(
+            template_name='users/login.html',
+            form_class=EmailAndUsernameAuthenticationForm
+        ),
         name='login'
     ),
     path(

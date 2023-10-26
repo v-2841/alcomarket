@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+  Page 500
+{% endblock title %}
+{% block content %}
+  <div class="container text-center">
+    <img class="img-fluid my-3"
+         src="https://http.cat/{{ status_code }}"
+         alt="{{ status_code }}">
+    <p class="lead">
+      Внутренняя ошибка сервера.
+      <br>
+      Сервер столкнулся с ситуацией, которую он не знает как обработать.
+    </p>
+    <a href="{% url 'goods:index' %}" class="btn btn-link">Перейти на главную</a>
+  </div>
+{% endblock content %}

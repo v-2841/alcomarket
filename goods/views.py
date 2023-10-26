@@ -120,10 +120,17 @@ def search(request):
     if not search_field:
         return redirect('goods:index')
     goods = Good.objects.filter(
-        active=True, name__icontains=search_field).select_related(
-            'category', 'manufacturer')
-    categories = Category.objects.filter(name__icontains=search_field)
-    manufacturers = Manufacturer.objects.filter(name__icontains=search_field)
+        Q(active=True) & (Q(name__icontains=search_field) | Q(
+            description__icontains=search_field))).select_related(
+                'category', 'manufacturer')
+    categories = Category.objects.annotate(
+        num_active_goods=Count('goods', filter=Q(goods__active=True))).filter(
+            num_active_goods__gt=0).filter(
+                name__icontains=search_field).order_by('name')
+    manufacturers = Manufacturer.objects.annotate(
+        num_active_goods=Count('goods', filter=Q(goods__active=True))).filter(
+            num_active_goods__gt=0).filter(
+                name__icontains=search_field).order_by('name')
     context = {
         'search_field': search_field,
         'goods': goods,
