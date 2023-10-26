@@ -126,13 +126,17 @@ a {
     color: #990033;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
+    .searchForm {
+        max-width: 160px;
+    }
+
     .goodImg {
         max-height: 480px;
     }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1199.98px) {
     .goodImg {
         max-height: 240px;
     }

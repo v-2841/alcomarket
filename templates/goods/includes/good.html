@@ -1,12 +1,12 @@
 <div class="row pt-3 pb-3" id="{{ good.id }}">
-  <div class="col-12 col-lg-3 text-center mb-3 my-lg-0">
+  <div class="col-12 col-xl-3 text-center mb-3 my-xl-0">
     {% if good.image %}
       <a href="{{ good.image.url }}">
         <img class="img-fluid goodImg" src="{{ good.image.url }}" alt="Фото">
       </a>
     {% endif %}
   </div>
-  <div class="col-12 col-lg-7 ps-lg-4 pt-2 pt-lg-0">
+  <div class="col-12 col-xl-7 ps-xl-4 pt-2 pt-xl-0">
     {% if forloop %}
       <a class="goodLink" href="{% url 'goods:good_detail' good.id %}">
         <h4>{{ good.name }}</h4>
@@ -38,7 +38,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-12 col-lg-2 align-self-center text-center">
+  <div class="col-12 col-xl-2 align-self-center text-center">
     <p class="fw-bold fs-5 header-color">{{ good.price.normalize }} ₽</p>
     {% if good.stock == 0 %}
       <p class="header-color">Нет в наличии</p>

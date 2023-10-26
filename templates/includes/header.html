@@ -2,7 +2,7 @@
 {% load user_filters %}
 {% with request.resolver_match.view_name as view_name %}
   <header>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-xl">
       <div class="container">
         <a class="navbar-brand" href="{% url 'goods:index' %}">
           <img src="{% static 'img/logo.png' %}"
@@ -22,15 +22,14 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarHeader">
-          <form class="d-flex my-3 my-lg-0 me-2 justify-content-center"
+          <form class="d-flex my-3 my-xl-0 me-2 justify-content-center"
                 role="search"
                 action="{% url 'goods:search' %}">
-            <input class="form-control mx-2"
+            <input class="form-control mx-2 searchForm"
                    type="search"
                    placeholder="Поиск"
                    aria-label="Search"
                    name="search_field"
-                   style="max-width: 160px"
                    value="{{ request.GET.search_field|default:'' }}">
           </form>
           <ul class="navbar-nav nav-fill">
