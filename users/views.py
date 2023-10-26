@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
@@ -15,8 +15,14 @@ User = get_user_model()
 
 class SignUp(CreateView):
     form_class = CreationForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('goods:index')
     template_name = 'users/signup.html'
+
+    def form_valid(self, form):
+        # form.instance.is_active = False
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        return response
 
 
 @login_required

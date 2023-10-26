@@ -38,7 +38,9 @@ class EmailAndUsernameAuthenticationForm(AuthenticationForm):
     )
     error_messages = {
         "invalid_login":
-            "Пожалуйста, введите правильные имя пользователя и пароль."
+            "Пожалуйста, введите правильные имя пользователя и пароль.",
+        "inactive":
+            "Ваша учетная запись неактивна. Свяжитесь с администратором.",
     }
 
     def clean_username(self):
@@ -46,11 +48,12 @@ class EmailAndUsernameAuthenticationForm(AuthenticationForm):
         is_email = '@' in username
         query = {'email__iexact' if is_email else 'username__iexact': username}
         try:
-            username = User.objects.get(**query).username
+            user = User.objects.get(**query)
+            self.confirm_login_allowed(user)
         except ObjectDoesNotExist:
             raise ValidationError(
                 self.error_messages['invalid_login'],
                 code='invalid_login',
                 params={'username': self.username_field.verbose_name},
             )
-        return username
+        return user.username
