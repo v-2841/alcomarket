@@ -64,9 +64,13 @@ a.nav-link:focus {
     --bs-navbar-active-color: #FEC3A6;
 }
 
+.navbar-nav {
+    --bs-nav-link-hover-color: #e5af95;
+}
+
 .dropdown-menu {
     --bs-dropdown-link-active-bg: #FEC3A6;
-    --bs-dropdown-link-active-color: #000;
+    --bs-dropdown-link-active-color: #ffbb998f;
 }
 
 :root {
