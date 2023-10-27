@@ -131,3 +131,33 @@ CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 CSRF_TRUSTED_ORIGINS = ['http://alcobottle.com', 'https://alcobottle.com']
 
 SITE_ID = 1
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'errors.log',
+            'maxBytes': 5 * 1024 * 1024,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        'telegram': {
+            'class': 'core.handlers.TelegramBotHandler',
+            'formatter': 'telegram',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        },
+        'telegram': {
+            'format': '%(levelname)s: %(message)s',
+        },
+    },
+    'root': {
+        'handlers': ['file', 'telegram'],
+        'level': 'ERROR',
+    },
+}
