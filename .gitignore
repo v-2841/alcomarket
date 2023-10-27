@@ -162,3 +162,5 @@ cython_debug/
 .vscode/
 mail/
 media/
+
+templates/includes/metrika.html
