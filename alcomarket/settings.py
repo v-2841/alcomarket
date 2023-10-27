@@ -142,10 +142,12 @@ LOGGING = {
             'maxBytes': 5 * 1024 * 1024,  # 5 MB
             'backupCount': 5,
             'formatter': 'verbose',
+            'level': 'ERROR',
         },
         'telegram': {
             'class': 'core.handlers.TelegramBotHandler',
             'formatter': 'telegram',
+            'level': 'ERROR',
         },
     },
     'formatters': {
@@ -158,6 +160,5 @@ LOGGING = {
     },
     'root': {
         'handlers': ['file', 'telegram'],
-        'level': 'ERROR',
     },
 }
