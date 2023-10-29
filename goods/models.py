@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 
 User = get_user_model()
@@ -82,6 +83,9 @@ class Good(models.Model):
 
     def delete(self, *args, **kwargs):
         raise Exception('Нельзя удалять товары. Отмечайте их как архивные.')
+
+    def get_absolute_url(self):
+        return reverse('goods:good_detail', kwargs={'good_id': self.id})
 
 
 @receiver(pre_save, sender=Good)

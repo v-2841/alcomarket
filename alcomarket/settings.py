@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'django.contrib.sites',
+    'django.contrib.sitemaps',
     'debug_toolbar',
     'core.apps.CoreConfig',
     'feedbacks.apps.FeedbacksConfig',

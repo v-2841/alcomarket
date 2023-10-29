@@ -10,6 +10,7 @@ urlpatterns = [
     path('profile/', include('users.urls_profile')),
     path('feedback/', include('feedbacks.urls')),
     path('', include('goods.urls')),
+    path('', include('core.urls')),
 ]
 handler403 = 'core.views.permission_denied'
 handler404 = 'core.views.page_not_found'
