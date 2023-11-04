@@ -1,4 +1,4 @@
-<div class="row pt-3 pb-3" id="{{ good.id }}">
+<div class="row py-2" id="{{ good.id }}">
   <div class="col-12 col-xl-3 text-center mb-3 my-xl-0">
     {% if good.image %}
       <a href="{{ good.image.url }}">
@@ -14,7 +14,9 @@
     {% else %}
       <h4>{{ good.name }}</h4>
     {% endif %}
-    <p>{{ good.description|linebreaksbr }}</p>
+    <p class="{% if not request.resolver_match.view_name == 'goods:good_detail' %} goodDescription {% endif %}">
+      {{ good.description|linebreaksbr }}
+    </p>
     <table class="table table-sm mt-4">
       <tbody>
         <tr>
@@ -57,8 +59,8 @@
       {% else %}
         <a href="{% url 'login' %}?next=/#{{ good.id }}" class="btn btn-pink">В корзину</a>
       {% endif %}
-      {% if good.stock < 10 %}
-        <p class="pt-2">
+      {% if good.stock <= 5 %}
+        <p class="pt-2 m-0">
           <small>
             {% if good.stock == 1 %}
               Осталась

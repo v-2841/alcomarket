@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-  Поиск по запросу {{ search_field|truncatechars:30 }}
+  Поиск по запросу: {{ search_field|truncatechars:30 }}
 {% endblock title %}
 {% block content %}
-  <h1 class="mb-4">Поиск по запросу {{ search_field }}</h1>
+  <h1 class="mb-4">Поиск по запросу: {{ search_field }}</h1>
   <h4>Категории (найдено {{ categories.count }})</h4>
   <div class="text-center">
     <div class="list-group text-center">

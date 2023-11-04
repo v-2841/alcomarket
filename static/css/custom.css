@@ -140,4 +140,7 @@ a {
     .goodImg {
         max-height: 240px;
     }
+    .goodDescription {
+        display: none;
+    }
 }
