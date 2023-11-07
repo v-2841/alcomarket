@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 
@@ -18,3 +19,9 @@ def server_error(request):
 
 def csrf_failure(request, reason=''):
     return render(request, 'core/403csrf.html')
+
+
+def confirm_age(request):
+    response = HttpResponse("Age confirmed")
+    response.set_cookie('ConfirmAge', '1', max_age=60 * 60 * 24 * 365)
+    return response

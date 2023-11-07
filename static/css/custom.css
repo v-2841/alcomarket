@@ -134,13 +134,41 @@ a {
     .goodImg {
         max-height: 480px;
     }
+
+    .permission-block {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        z-index: 10;
+    }
 }
 
 @media (max-width: 1199.98px) {
     .goodImg {
         max-height: 240px;
     }
+
     .goodDescription {
         display: none;
     }
+
+    .permission-block {
+        position: fixed;
+        bottom: 0;
+        display: none;
+        z-index: 10;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    z-index: 10;
 }

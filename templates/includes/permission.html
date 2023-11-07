@@ -1,0 +1,16 @@
+{% load static %}
+<div class="overlay"></div>
+<div class="card permission-block">
+  <h5 class="card-header">Вам больше 18 лет?</h5>
+  <div class="card-body">
+    <p class="card-text">
+      Сайт содержит информацию для лиц совершеннолетнего возраста.
+      Сведения, размещенные на сайте, не являются рекламой и носят исключительно информационный характер.
+      Для доступа необходимо подтвердить совершеннолетний возраст.
+    </p>
+    <div class="text-center">
+      <button class="btn btn-pink" id="confirmButton">Подтвердить возраст</button>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/confirm_age.js' %}"></script>

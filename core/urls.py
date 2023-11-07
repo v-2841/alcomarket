@@ -4,6 +4,7 @@ from django.urls import path
 from django.views.generic import RedirectView
 from django.views.generic.base import TemplateView
 
+from core import views
 from goods.sitemaps import GoodSitemap, StaticViewSitemap
 
 
@@ -13,6 +14,7 @@ sitemaps = {
 }
 
 urlpatterns = [
+    path('confirm_age/', views.confirm_age, name='confirm_age'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),
     path('favicon.ico', RedirectView.as_view(
