@@ -4,4 +4,4 @@ static/** linguist-vendored
 static/css/custom.css -linguist-detectable
 static/js/confirm_age.js -linguist-detectable
 static/js/shopping_cart.js -linguist-detectable
-static/js/bootstrap.bundle.js -linguist-detectable
+bootstrap.bundle.js -linguist-detectable
