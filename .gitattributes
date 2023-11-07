@@ -1,3 +1,7 @@
 data/** linguist-vendored
-
+static/** linguist-vendored
 **/migrations/** linguist-generated
+static/css/custom.css -linguist-detectable
+static/js/confirm_age.js -linguist-detectable
+static/js/shopping_cart.js -linguist-detectable
+static/js/bootstrap.bundle.js -linguist-detectable
