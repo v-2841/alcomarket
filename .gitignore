@@ -163,5 +163,6 @@ cython_debug/
 mail/
 media/
 data_import/
+setup.cfg
 
 *.log.*
