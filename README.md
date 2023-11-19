@@ -50,6 +50,8 @@ python manage.py runserver
 ```
 python manage.py createsuperuser
 ```
+Создать файл .env с переменными среды по примеру .env.example.
+
 В администраторской зоне создать карточки товаров.
 
 ## Стек технологий:
