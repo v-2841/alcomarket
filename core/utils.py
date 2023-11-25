@@ -19,6 +19,7 @@ def paginator(request, obj):
 def send_telegram_message(text):
     token = os.getenv('TELEGRAM_TOKEN')
     chat_ids = [i.strip() for i in os.getenv('CHAT_IDS').split(',')]
-    link = 'https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={text}'
+    link = ('https://api.telegram.org/bot{token}/'
+            + 'sendMessage?chat_id={chat_id}&text={text}')
     for chat_id in chat_ids:
         requests.get(link.format(token=token, chat_id=chat_id, text=text))
