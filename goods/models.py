@@ -146,6 +146,12 @@ class UserShoppingCart(models.Model):
                 {'quantity': 'На складе нет такого количества товаров'})
 
 
+@receiver(post_save, sender=UserShoppingCart)
+def check_quantity(sender, instance, **kwargs):
+    if instance.quantity == 0:
+        instance.delete()
+
+
 class Category(models.Model):
     name = models.CharField(
         max_length=100,

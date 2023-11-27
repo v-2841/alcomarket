@@ -67,9 +67,9 @@
             <div class="card-footer text-end">{{ total_price }} ₽</div>
           </div>
           <div class="d-grid">
-            {% if not formset.errors %}
               <p class="small mt-3 header-color">При внесении изменений нажмите "Сохранить изменения"</p>
               <button class="btn btn-green mb-3" type="submit" form="cartForm">Сохранить изменения</button>
+              {% if not formset.errors %}
               <a href="{% url 'goods:pre_order' %}?total_price={{ total_price }}"
                  class="btn btn-green">Оформить заказ</a>
             {% endif %}

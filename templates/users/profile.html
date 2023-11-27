@@ -23,10 +23,12 @@
           Адрес: {{ order.address }}
           <br>
           Статус:
-          {% if order.is_delivered %}
+          {% if order.get_status_display == "Доставлен" %}
             <span class="delivered">Доставлен</span>
+          {% elif order.get_status_display == "Отменён" %}
+            <span class="cancelled">Отменён</span>
           {% else %}
-            <span class="notDelivered">Не доставлен</span>
+            <span>{{ order.get_status_display }}</span>
           {% endif %}
         </div>
         <div class="card-body">

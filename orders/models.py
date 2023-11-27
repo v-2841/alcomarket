@@ -8,6 +8,13 @@ from django.dispatch import receiver
 from goods.models import Good
 
 
+ORDER_STATUS = [
+    ('1_PENDING', 'Ожидание'),
+    ('2_PROCESSING', 'Обработка'),
+    ('3_SHIPPED', 'Отправлен'),
+    ('4_DELIVERED', 'Доставлен'),
+    ('5_CANCELLED', 'Отменён'),
+]
 User = get_user_model()
 
 
@@ -41,9 +48,11 @@ class Order(models.Model):
         max_length=64,
         verbose_name='Контактные данные',
     )
-    is_delivered = models.BooleanField(
-        default=False,
-        verbose_name='Доставлен',
+    status = models.CharField(
+        max_length=20,
+        choices=ORDER_STATUS,
+        default='1_PENDING',
+        verbose_name='Статус',
     )
 
     class Meta:

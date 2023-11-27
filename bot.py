@@ -42,7 +42,7 @@ def goods(update, context):
 def new_goods_feedbacks(update, context):
     chat = update.effective_chat
     new_feedbacks = Feedback.objects.filter(is_processed=False).count()
-    new_orders = Order.objects.filter(is_delivered=False).count()
+    new_orders = Order.objects.filter(status='1_PENDING').count()
     context.bot.send_message(
         chat_id=chat.id,
         text=(f'Новых сообщений: {new_feedbacks}\n'

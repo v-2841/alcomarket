@@ -19,7 +19,6 @@ class SignUp(CreateView):
     template_name = 'users/signup.html'
 
     def form_valid(self, form):
-        # form.instance.is_active = False
         response = super().form_valid(form)
         login(self.request, self.object)
         return response

@@ -23,8 +23,8 @@ class GoodAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         return queryset.select_related('category', 'manufacturer')
 
-    # def has_delete_permission(self, request, obj=None):
-    #     return False
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 class UserShoppingCartAdmin(admin.ModelAdmin):
