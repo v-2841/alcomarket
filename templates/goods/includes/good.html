@@ -2,7 +2,7 @@
   <div class="col-12 col-xl-3 text-center mb-3 my-xl-0">
     {% if good.image %}
       <a href="{{ good.image.url }}">
-        <img class="img-fluid goodImg" src="{{ good.image.url }}" alt="Фото">
+        <img class="img-fluid goodImg" src="{{ good.image.url }}" alt="{{ good.name }}">
       </a>
     {% endif %}
   </div>

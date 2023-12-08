@@ -1,8 +1,29 @@
 {% extends "base.html" %}
 {% load static %}
 {% load user_filters %}
+{% block description %}
+  <meta name="description"
+        content="{{ good.description|striptags|truncatechars:200 }}" />
+{% endblock description %}
+{% block extra_head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ good.name }}",
+    "image": "{{ good.image.url }}",
+    "description": "{{ good.description|striptags|truncatechars:200 }}",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "RUB",
+      "price": "{{ good.price.normalize }}",
+      "availability": "{% if good.stock > 0 %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+    }
+  }
+  </script>
+{% endblock extra_head %}
 {% block title %}
-  {{ good.name }}
+  {{ good.name }} - Купить {{ good.name }} в интернет-магазине Alcobottle
 {% endblock title %}
 {% block content %}
   {% include "goods/includes/good.html" %}
