@@ -64,6 +64,14 @@ class Order(models.Model):
         return f'{self.created_at.strftime("%c")} - Заказ №{self.id}'
 
 
+@receiver(post_save, sender=Order)
+def return_goods_after_cancelling(sender, instance, **kwargs):
+    if instance.status == '5_CANCELLED':
+        for order_good in instance.ordergood_set.all():
+            order_good.good.stock += order_good.quantity
+            order_good.good.save()
+
+
 class OrderGood(models.Model):
     order = models.ForeignKey(
         Order,
