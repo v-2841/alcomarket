@@ -5,6 +5,14 @@
 {% block content %}
   <div class="row justify-content-center">
     <div class="col-xl-6">
+      <h5>Оставьте свое сообщение в нашем Telegram боте, чтобы мы могли вам помочь</h5>
+      <a href="https://t.me/alcobottle_help_chat_bot"
+         class="btn mb-4"
+         style="background-color:#229ED9;
+                color: #ffffff;
+                border-color: #229ED9"
+         target="_blank">Telegram бот</a>
+      <p>...или заполните форму обратной связи и мы ответим вам на вашу почту</p>
       <div class="card">
         <div class="card-header">Оставить сообщение</div>
         <div class="card-body">
@@ -44,12 +52,7 @@
               <label for="id_message">
                 Сообщение<span class="required text-danger">*</span>
               </label>
-              <textarea name="message"
-                        class="form-control"
-                        required
-                        id="id_message"
-                        value="{{ form.message.value|default:'' }}"
-                        rows="10">
+              <textarea name="message" class="form-control" required id="id_message" value="{{ form.message.value|default:'' }}" rows="10">
               </textarea>
             </div>
             <div class="text-center">
