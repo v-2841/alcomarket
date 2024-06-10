@@ -8,7 +8,8 @@ from django.contrib.auth.views import (LoginView, LogoutView,
 from django.urls import path
 
 from users import views
-from users.forms import EmailAndUsernameAuthenticationForm
+from users.forms import (EmailAndUsernameAuthenticationForm,
+                         PasswordResetFormWithAsyncEmail)
 
 
 urlpatterns = [
@@ -29,7 +30,8 @@ urlpatterns = [
     path(
         'password_reset/',
         PasswordResetView.as_view(
-            template_name='users/password_reset_form.html'
+            template_name='users/password_reset_form.html',
+            form_class=PasswordResetFormWithAsyncEmail,
         ),
         name='password_reset_form'
     ),

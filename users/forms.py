@@ -1,9 +1,12 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
-                                       UsernameField)
+from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
+                                       UserCreationForm, UsernameField)
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
+from django.template import loader
+
+from core.tasks import async_send_mail
 
 
 User = get_user_model()
@@ -58,3 +61,30 @@ class EmailAndUsernameAuthenticationForm(AuthenticationForm):
                 params={'username': self.username_field.verbose_name},
             )
         return user.username
+
+
+class PasswordResetFormWithAsyncEmail(PasswordResetForm):
+    def send_mail(
+        self,
+        subject_template_name,
+        email_template_name,
+        context,
+        from_email,
+        to_email,
+        html_email_template_name=None,
+    ):
+        subject = loader.render_to_string(subject_template_name, context)
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string(email_template_name, context)
+        if html_email_template_name is not None:
+            html_email = loader.render_to_string(html_email_template_name,
+                                                 context)
+        else:
+            html_email = None
+        return async_send_mail.delay(
+            subject=subject,
+            message=body,
+            from_email=from_email,
+            recipient_list=[to_email],
+            html_message=html_email,
+        )
