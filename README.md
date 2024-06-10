@@ -58,6 +58,10 @@ python manage.py createsuperuser
 - Python
 - Django
 - Postgresql
+- Redis
+- Celery
 - HTML
 - Bootstrap 5
 - CSS
+- Python-telegram-bot
+- Poetry

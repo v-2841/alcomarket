@@ -132,13 +132,14 @@ CSRF_TRUSTED_ORIGINS = ['http://alcobottle.com', 'https://alcobottle.com']
 
 SITE_ID = 1
 
+Path('logs/').mkdir(exist_ok=True)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
+        'log_file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'errors.log',
+            'filename': 'logs/main.log',
             'maxBytes': 5 * 1024 * 1024,  # 5 MB
             'backupCount': 5,
             'formatter': 'verbose',
@@ -158,7 +159,18 @@ LOGGING = {
             'format': '%(levelname)s: %(message)s',
         },
     },
+    'loggers': {
+        'django.request': {
+            'handlers': ['log_file', 'telegram'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
     'root': {
-        'handlers': ['file', 'telegram'],
+        'handlers': ['log_file', 'telegram'],
     },
 }
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
