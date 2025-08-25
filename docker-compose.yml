@@ -1,0 +1,67 @@
+volumes:
+  redis:
+  pg_data:
+
+services:
+  db:
+    image: postgres:14
+    env_file: .env
+    restart: always
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    image: ${COMPOSE_PROJECT_NAME}-backend
+    pull_policy: never
+    env_file: .env
+    entrypoint: /app/backend-entrypoint.sh
+    restart: unless-stopped
+    volumes:
+      - ./staticfiles:/var/www/alcomarket/static/
+      - ./media:/var/www/alcomarket/media/
+    depends_on:
+      - db
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "8001:80"
+    restart: always
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./staticfiles/:/var/www/alcomarket/static/
+      - ./media/:/var/www/alcomarket/media/
+
+  redis:
+    image: redis:7
+    restart: always
+    volumes:
+      - redis:/data
+
+  celery:
+    image: ${COMPOSE_PROJECT_NAME}-backend
+    pull_policy: never
+    env_file: .env
+    command: celery -A alcomarket worker -l info
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  celerybeat:
+    image: ${COMPOSE_PROJECT_NAME}-backend
+    pull_policy: never
+    env_file: .env
+    command: celery -A alcomarket beat -l info
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  bot:
+    image: ${COMPOSE_PROJECT_NAME}-backend
+    pull_policy: never
+    env_file: .env
+    command: python bot.py
+    restart: unless-stopped
+    depends_on:
+      - db

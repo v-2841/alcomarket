@@ -164,3 +164,7 @@ mail/
 media/
 data_import/
 logs/
+
+pg_data/
+staticfiles/
+media/
