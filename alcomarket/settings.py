@@ -156,7 +156,7 @@ LOGGING = {
             'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         },
         'telegram': {
-            'format': '%(levelname)s: %(message)s',
+            'format': '%(name)s - %(levelname)s - %(message)s',
         },
     },
     'loggers': {
